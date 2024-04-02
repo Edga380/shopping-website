@@ -1,0 +1,13 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --main-bg-color: rgb(30, 30, 30);
+  --default-text-color: rgb(230, 230, 230);
+}
+
+body {
+  background-color: var(--main-bg-color);
+  color: var(--default-text-color);
+}

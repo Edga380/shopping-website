@@ -3,11 +3,25 @@
 @tailwind utilities;
 
 :root {
-  --main-bg-color: rgb(30, 30, 30);
-  --default-text-color: rgb(230, 230, 230);
+  --pallet-color-01: rgb(229, 214, 211);
+  --pallet-color-02: rgb(229, 196, 189);
+  --pallet-color-03: rgb(229, 180, 167);
+  --pallet-color-04: rgb(217, 155, 141);
 }
 
 body {
-  background-color: var(--main-bg-color);
-  color: var(--default-text-color);
+  background-color: var(--pallet-color-01);
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 1920px;
+  margin: 0 auto;
+}
+
+header {
+  width: inherit;
 }

@@ -1,11 +1,12 @@
-import Image from "next/image";
-
+import SlideShow from "@/components/SlideShow";
 export default function Home() {
   return (
     <>
-      <nav className="bg-black">Navigation</nav>
-      <header>Header</header>
-      <section>Products</section>
+      <header className="flex justify-center">
+        <SlideShow></SlideShow>
+      </header>
+      <section>Favorites</section>
+      <section>Best sellers</section>
       <footer>Footer</footer>
     </>
   );

@@ -3,8 +3,11 @@
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
+import { ComponentProps } from "react";
 
-export default function NavBar() {
+export default function NavBar(
+  props: Omit<ComponentProps<typeof Link>, "className">
+) {
   const pathname = usePathname();
   return (
     <>
@@ -20,17 +23,17 @@ export default function NavBar() {
         </Link>
         <div className="justify-center">
           <Link
-            href="/"
+            {...props}
             className={`text-lg font-bold text-text-color-dark-green mr-10 px-3 py-2 rounded hover:bg-color-pallet-04 ${
-              pathname === "/" ? "underline" : ""
+              pathname === props.href && "underline"
             }`}
           >
             Home
           </Link>
           <Link
-            href="/Products"
+            {...props}
             className={`text-lg font-bold text-text-color-dark-green mr-10 px-3 py-2 rounded hover:bg-color-pallet-04 ${
-              pathname === "/Products" ? "underline" : ""
+              pathname === props.href && "underline"
             }`}
           >
             Products

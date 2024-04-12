@@ -13,8 +13,8 @@ export function NavLink(props: Omit<ComponentProps<typeof Link>, "className">) {
   return (
     <Link
       {...props}
-      className={`p-4 hover:bg-slate-600 hover:text-slate-900 focus-visible:bg-slate-600 focus-visible:text-slate-900 ${
-        pathname === props.href && "bg-slate-300 text-slate-900"
+      className={`text-lg font-bold text-text-color-dark-green mr-10 px-3 py-2 rounded hover:bg-color-pallet-04 ${
+        pathname === props.href && "underline"
       }`}
     ></Link>
   );

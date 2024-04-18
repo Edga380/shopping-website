@@ -6,8 +6,6 @@ import { addProductDB } from "../../../../database/db";
 
 export async function addProduct(formData: FormData, imagesCount: number) {
   try {
-    console.log(formData);
-
     const { name, description, category, priceInPennies, units, available } =
       Object.fromEntries(formData.entries());
 
@@ -36,7 +34,16 @@ export async function addProduct(formData: FormData, imagesCount: number) {
         console.log(filePath);
       })
     );
-    addProductDB(formData);
+
+    const response = addProductDB(
+      name,
+      description,
+      category,
+      priceInPennies,
+      units,
+      available,
+      images
+    );
     console.log("Product added successfully!");
   } catch (error) {
     console.log("Error adding product: ", error);

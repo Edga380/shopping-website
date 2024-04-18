@@ -30,21 +30,29 @@ const productsDb = initializeDatabase(
   "products.sql"
 );
 
-async function addProductDB(formData) {
-  console.log(formData);
+async function addProductDb(
+  name,
+  description,
+  category,
+  priceInPennies,
+  units,
+  available,
+  images
+) {
   const statement = productsDb.prepare(
     "INSERT INTO Products (name, description, category, priceInPennies, stock, isAvailable) VALUES (?, ?, ?, ?, ?, ?)"
   );
   try {
     const result = statement.run(
-      "formData.name",
-      "formData.description",
-      "formData.category",
-      20,
-      12,
-      "formData.isAvailable"
+      name,
+      description,
+      category,
+      priceInPennies,
+      units,
+      available
     );
     console.log("Product added successfully: ", result);
+    await addProductDbImages(result.lastInsertRowid, category, images);
     return true;
   } catch (error) {
     console.error("Failed to add product: ", error);
@@ -52,4 +60,23 @@ async function addProductDB(formData) {
   }
 }
 
-module.exports = { usersDb, productsDb, addProductDB };
+async function addProductDbImages(productId, category, images) {
+  try {
+    await Promise.all(
+      images.map(async (image) => {
+        const imagePath = `/products/${category}/${image.name}`;
+        const statement = productsDb.prepare(
+          "INSERT INTO ProductImages (product_id, path) VALUES (?, ?)"
+        );
+        const result = statement.run(productId, imagePath);
+        console.log("Product <Images> added successfully: ", result);
+      })
+    );
+    return true;
+  } catch (error) {
+    console.error("Failed to add product <Images>: ", error);
+    return false;
+  }
+}
+
+module.exports = { usersDb, productsDb, addProductDB: addProductDb };

@@ -5,16 +5,16 @@ import { addProduct } from "../../_actions/products";
 import { formatCurrency } from "@/utils/formatters";
 
 export default function AdminProductFrom() {
+  const [productAddedSuccessfully, setProductAddedSuccessfully] =
+    useState<boolean>(false);
   const [priceInPennies, setPriceInPennies] = useState<number>(0);
   const [selectedImages, setSelectedImages] = useState<File[]>([]);
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    console.log("Files!!!");
     const files = event.target.files;
     if (files) {
       const newImages = Array.from(files);
       setSelectedImages([...selectedImages, ...newImages]);
-      console.log("setSelectedImages!!!");
     }
   };
 
@@ -65,6 +65,15 @@ export default function AdminProductFrom() {
   return (
     <form onSubmit={handleFormSumbit}>
       <div className="flex flex-col">
+        <div
+          className={
+            productAddedSuccessfully ? "text-green-600" : "text-red-500"
+          }
+        >
+          {productAddedSuccessfully
+            ? "Product added successfully."
+            : "Failed to add product."}
+        </div>
         <label
           htmlFor="name"
           className="text-lg font-bold text-text-color-dark-green py-2"

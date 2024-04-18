@@ -2,11 +2,68 @@
 
 import { useState } from "react";
 import { addProduct } from "../../_actions/products";
+import { formatCurrency } from "@/utils/formatters";
 
 export default function AdminProductFrom() {
-  const [formatCurrency, setFormatCurrency] = useState<number>(0);
+  const [priceInPennies, setPriceInPennies] = useState<number>(0);
+  const [selectedImages, setSelectedImages] = useState<File[]>([]);
+
+  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    console.log("Files!!!");
+    const files = event.target.files;
+    if (files) {
+      const newImages = Array.from(files);
+      setSelectedImages([...selectedImages, ...newImages]);
+      console.log("setSelectedImages!!!");
+    }
+  };
+
+  const handleRemoveImage = (indexToRemove: number) => {
+    setSelectedImages(selectedImages.filter((_, i) => i !== indexToRemove));
+  };
+
+  const handleFormSumbit = (event: React.ChangeEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const formData = new FormData();
+
+    formData.append(
+      "name",
+      (event.currentTarget.querySelector("#name") as HTMLInputElement).value
+    );
+    formData.append(
+      "description",
+      (event.currentTarget.querySelector("#description") as HTMLInputElement)
+        .value
+    );
+    formData.append(
+      "category",
+      (event.currentTarget.querySelector("#category") as HTMLInputElement).value
+    );
+    formData.append(
+      "priceInPennies",
+      (event.currentTarget.querySelector("#priceInPennies") as HTMLInputElement)
+        .value
+    );
+    formData.append(
+      "units",
+      (event.currentTarget.querySelector("#units") as HTMLInputElement).value
+    );
+    formData.append(
+      "available",
+      (event.currentTarget.querySelector("#available") as HTMLInputElement)
+        .checked
+        ? "true"
+        : "false"
+    );
+
+    selectedImages.forEach((image, i) => {
+      formData.append(`image_${i}`, image);
+    });
+    addProduct(formData, selectedImages.length);
+  };
+
   return (
-    <form action={addProduct}>
+    <form onSubmit={handleFormSumbit}>
       <div className="flex flex-col">
         <label
           htmlFor="name"
@@ -32,29 +89,47 @@ export default function AdminProductFrom() {
         <textarea
           id="description"
           name="description"
-          cols={60}
+          cols={62}
           rows={6}
           className="resize-none p-2 rounded"
           placeholder="Product description"
         ></textarea>
 
         <label
-          htmlFor="priceInCents"
+          htmlFor="category"
           className="text-lg font-bold text-text-color-dark-green py-2"
         >
-          Price in Cents
+          Category
+        </label>
+        <select
+          id="category"
+          name="category"
+          className="resize-none p-2 rounded"
+        >
+          <option value="other">Other</option>
+          <option value="tshirt">T-shirt</option>
+          <option value="jumper">Jumper</option>
+          <option value="pants">Pants</option>
+          <option value="socks">Socks</option>
+        </select>
+
+        <label
+          htmlFor="priceInPennies"
+          className="text-lg font-bold text-text-color-dark-green py-2"
+        >
+          Price in Pennies
         </label>
         <input
           type="number"
-          id="priceInCents"
-          name="priceInCents"
+          id="priceInPennies"
+          name="priceInPennies"
           placeholder="0"
           className="p-2 rounded"
-          onChange={(v) => setFormatCurrency(Number(v.target.value))}
+          onChange={(v) => setPriceInPennies(Number(v.target.value))}
           required
         />
         <div className="py-2 pl-2 mt-2 w-auto bg-color-pallet-03 rounded">
-          {formatCurrency}
+          {formatCurrency(Number(priceInPennies))}
         </div>
 
         <label
@@ -83,8 +158,32 @@ export default function AdminProductFrom() {
           id="image"
           name="image"
           className="text-text-color-dark-green py-2 pl-2 mt-2 bg-color-pallet-03 rounded"
+          onChange={handleImageChange}
+          multiple
           required
         />
+        <>
+          <div className="grid grid-cols-3 py-2">
+            {selectedImages.map((image, i) => (
+              <div className="flex flex-col">
+                <img
+                  key={i}
+                  src={URL.createObjectURL(image)}
+                  alt={`Selected Image ${i}`}
+                  width={200}
+                  height={60}
+                  className="m-2 w-52 h-48"
+                />
+                <button
+                  onClick={() => handleRemoveImage(i)}
+                  className="bg-color-pallet-03 text-lg font-bold text-text-color-dark-green my-4 px-3 py-2 rounded hover:bg-color-pallet-04"
+                >
+                  Remove
+                </button>
+              </div>
+            ))}
+          </div>
+        </>
 
         <label
           htmlFor="available"
@@ -100,8 +199,8 @@ export default function AdminProductFrom() {
         />
 
         <button
-          type="submit"
           className="bg-color-pallet-03 text-lg font-bold text-text-color-dark-green my-4 px-3 py-2 rounded hover:bg-color-pallet-04"
+          type="submit"
         >
           Save
         </button>

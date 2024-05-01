@@ -1,41 +1,41 @@
 "use server";
 
 import fs from "fs/promises";
-import { join } from "path";
-import { addProductDB } from "../../../../database/db";
+import { dirname, join } from "path";
+import {
+  addProductDB,
+  updateProductDb,
+  RemoveProductImageFromDb,
+} from "../../../../database/db";
 
-export async function addProduct(formData: FormData, imagesCount: number) {
+export async function addProduct(formData: FormData) {
   try {
-    const { name, description, category, priceInPennies, units, available } =
-      Object.fromEntries(formData.entries());
+    const {
+      productId,
+      name,
+      description,
+      category,
+      priceInPennies,
+      units,
+      available,
+      imageCount,
+    } = Object.fromEntries(formData.entries());
 
     const images: File[] = [];
 
-    for (let i = 0; i < imagesCount; i++) {
+    const imageCountNumber = parseInt(imageCount as string);
+
+    for (let i = 0; i < imageCountNumber; i++) {
       const currentImages = formData.getAll(`image_${i}`) as File[];
       images.push(...currentImages);
     }
 
     if (!images.length) {
-      console.error("No image found in form data!");
-      return;
+      console.error("Choose images");
+      return "Choose images";
     }
 
-    await Promise.all(
-      images.map(async (image) => {
-        const imageBuffer = await image.arrayBuffer();
-        const filePath = join(
-          "public",
-          "products",
-          category as string,
-          image.name
-        );
-        await fs.writeFile(filePath, Buffer.from(imageBuffer));
-        console.log(filePath);
-      })
-    );
-
-    const response = addProductDB(
+    const response = await addProductDB(
       name,
       description,
       category,
@@ -44,8 +44,104 @@ export async function addProduct(formData: FormData, imagesCount: number) {
       available,
       images
     );
-    console.log("Product added successfully!");
+    if (response) {
+      await Promise.all(
+        images.map(async (image) => {
+          const imageBuffer = await image.arrayBuffer();
+          const filePath = join(
+            "public",
+            "products",
+            category as string,
+            image.name
+          );
+          await fs.mkdir(dirname(filePath), { recursive: true });
+          await fs.writeFile(filePath, Buffer.from(imageBuffer));
+          console.log(filePath);
+        })
+      );
+      console.log("Product added successfully into database.");
+      return "Product added successfully into database.";
+    } else {
+      console.log("Failed to add product into database.");
+      return "Failed to add product into database.";
+    }
   } catch (error) {
     console.log("Error adding product: ", error);
+    return "Error adding product";
   }
+}
+
+export async function updateProduct(formData: FormData) {
+  try {
+    const {
+      productId,
+      name,
+      description,
+      category,
+      priceInPennies,
+      units,
+      available,
+      imageCount,
+    } = Object.fromEntries(formData.entries());
+
+    const images: File[] = [];
+
+    const imageCountNumber = parseInt(imageCount as string);
+
+    for (let i = 0; i < imageCountNumber; i++) {
+      const currentImages = formData.getAll(`image_${i}`) as File[];
+      images.push(...currentImages);
+    }
+
+    const response = await updateProductDb(
+      productId,
+      name,
+      description,
+      category,
+      priceInPennies,
+      units,
+      available,
+      images
+    );
+    if (response) {
+      if (!images.length) {
+        console.log("No new images added");
+        return "Product updated successfully in database. No new images added.";
+      }
+      await Promise.all(
+        images.map(async (image) => {
+          const imageBuffer = await image.arrayBuffer();
+          const filePath = join(
+            "public",
+            "products",
+            category as string,
+            image.name
+          );
+          await fs.mkdir(dirname(filePath), { recursive: true });
+          await fs.writeFile(filePath, Buffer.from(imageBuffer));
+          console.log(filePath);
+        })
+      );
+      console.log("Product updated successfully into database.");
+      return "Product updated successfully into database.";
+    } else {
+      console.log("Failed to update product into database.");
+      return "Failed to update product into database.";
+    }
+  } catch (error) {
+    console.log("Error updating product: ", error);
+    return "Error updating product";
+  }
+}
+
+export async function RemoveProductImage(
+  indexToRemove: number,
+  imagePath: any
+) {
+  const response = await RemoveProductImageFromDb(indexToRemove);
+  if (response) {
+    await fs.unlink(`public/${imagePath[0]}`);
+    return true;
+  }
+  return false;
 }

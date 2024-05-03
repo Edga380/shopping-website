@@ -2,6 +2,9 @@ import Link from "next/link";
 import { PageHeader } from "../_components/PageHeader";
 import { formatCurrency } from "@/utils/formatters";
 import { RetrieveAllProductData } from "../../../../database/db";
+import AdminProductDropdownMenu from "./_components/ProductDropdownMenu";
+
+export const fetchCache = "force-no-store";
 
 export default function AdminProductsPage() {
   return (
@@ -48,18 +51,19 @@ async function DisplayProducts() {
             </div>
             <div className="px-2 self-center">{(product as any).stock}</div>
             <div className="px-2 self-center">
-              {(product as any).isAvailable === "true" ? "Yes" : "No"}
+              {(product as any).isAvailable === "true" ? (
+                <div className="bg-green-600 rounded-full w-4 h-4"></div>
+              ) : (
+                <div className="bg-red-600 rounded-full w-4 h-4"></div>
+              )}
             </div>
             <div className="px-2 self-center">
               {(product as any).created_at.slice(0, 10)}
             </div>
-            <button className="bg-color-pallet-03 text-lg font-bold text-text-color-dark-green my-1 rounded hover:bg-color-pallet-04 self-center">
-              <Link
-                href={`/admin/products/${(product as any).product_id}/edit`}
-              >
-                Edit
-              </Link>
-            </button>
+            <AdminProductDropdownMenu
+              productId={(product as any).product_id}
+              isAvailable={(product as any).isAvailable}
+            ></AdminProductDropdownMenu>
           </div>
         ))}
       </div>

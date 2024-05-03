@@ -5,10 +5,12 @@ import { usePathname } from "next/navigation";
 import { ComponentProps, ReactNode } from "react";
 
 export function AdminNav({ children }: { children: ReactNode }) {
-  return <nav className="">{children}</nav>;
+  return <nav className="my-4">{children}</nav>;
 }
 
-export function NavLink(props: Omit<ComponentProps<typeof Link>, "className">) {
+export function AdminNavLink(
+  props: Omit<ComponentProps<typeof Link>, "className">
+) {
   const pathname = usePathname();
   return (
     <Link

@@ -10,7 +10,6 @@ import { formatCurrency } from "@/utils/formatters";
 import { useRouter } from "next/navigation";
 
 export default function AdminProductFrom({ product }: { product?: any }) {
-  console.log(product);
   const router = useRouter();
   const [productData, productImages] = product || [];
   const [priceInPennies, setPriceInPennies] = useState<number>(
@@ -50,7 +49,7 @@ export default function AdminProductFrom({ product }: { product?: any }) {
     event.preventDefault();
     const formData = new FormData();
 
-    formData.append("productId", productData.product_id);
+    formData.append("productId", productData?.product_id);
 
     formData.append(
       "name",
@@ -216,12 +215,12 @@ export default function AdminProductFrom({ product }: { product?: any }) {
                   alt={`Selected Image ${image.image_id}`}
                   width={200}
                   height={60}
-                  className="m-2 w-52 h-48"
+                  className="m-auto w-52 h-48"
                 />
                 <button
                   type="button"
                   onClick={() => handleRemoveExistingImage(image.image_id)}
-                  className="bg-color-pallet-03 text-lg font-bold text-text-color-dark-green my-4 px-3 py-2 rounded hover:bg-color-pallet-04"
+                  className="bg-color-pallet-03 text-lg font-bold text-text-color-dark-green my-4 px-3 py-2 rounded hover:bg-color-pallet-04 m-auto"
                 >
                   Remove
                 </button>
@@ -235,12 +234,12 @@ export default function AdminProductFrom({ product }: { product?: any }) {
                   alt={`Selected Image ${i}`}
                   width={200}
                   height={60}
-                  className="m-2 w-52 h-48"
+                  className="m-auto w-52 h-48"
                 />
                 <button
                   type="button"
                   onClick={() => handleRemoveImage(i)}
-                  className="bg-color-pallet-03 text-lg font-bold text-text-color-dark-green my-4 px-3 py-2 rounded hover:bg-color-pallet-04"
+                  className="bg-color-pallet-03 text-lg font-bold text-text-color-dark-green my-4 px-3 py-2 rounded hover:bg-color-pallet-04 m-auto"
                 >
                   Remove
                 </button>

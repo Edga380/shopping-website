@@ -10,8 +10,10 @@ export default async function AdminEditProductPage({
   const product = await RetrieveProductData(id);
   return (
     <>
-      <PageHeader>Edit Product</PageHeader>
-      <AdminProductFrom product={product}></AdminProductFrom>
+      <div className="w-2/4 mx-auto">
+        <PageHeader>Edit Product</PageHeader>
+        <AdminProductFrom product={product}></AdminProductFrom>
+      </div>
     </>
   );
 }

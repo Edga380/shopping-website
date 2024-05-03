@@ -6,6 +6,8 @@ import {
   addProductDB,
   updateProductDb,
   RemoveProductImageFromDb,
+  UpdateProductAvailabilityFromDb,
+  DeleteProductFromDb,
 } from "../../../../database/db";
 
 export async function addProduct(formData: FormData) {
@@ -56,7 +58,6 @@ export async function addProduct(formData: FormData) {
           );
           await fs.mkdir(dirname(filePath), { recursive: true });
           await fs.writeFile(filePath, Buffer.from(imageBuffer));
-          console.log(filePath);
         })
       );
       console.log("Product added successfully into database.");
@@ -119,7 +120,6 @@ export async function updateProduct(formData: FormData) {
           );
           await fs.mkdir(dirname(filePath), { recursive: true });
           await fs.writeFile(filePath, Buffer.from(imageBuffer));
-          console.log(filePath);
         })
       );
       console.log("Product updated successfully into database.");
@@ -132,6 +132,35 @@ export async function updateProduct(formData: FormData) {
     console.log("Error updating product: ", error);
     return "Error updating product";
   }
+}
+
+export async function UpdateProductAvailability(
+  productId: number,
+  isAvailable: string
+) {
+  const response = await UpdateProductAvailabilityFromDb(
+    productId,
+    isAvailable
+  );
+  if (response) {
+    return true;
+  }
+  return false;
+}
+
+export async function DeleteProduct(productId: number) {
+  const response = await DeleteProductFromDb(productId);
+  if (response.success) {
+    for (const imgPath of response.imagePath as any) {
+      try {
+        await fs.unlink(`public/${imgPath.path}`);
+      } catch (error) {
+        console.error("Error deleting image", error);
+      }
+    }
+    return true;
+  }
+  return false;
 }
 
 export async function RemoveProductImage(

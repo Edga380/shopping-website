@@ -153,13 +153,45 @@ async function RemoveProductImageFromDb(imageId) {
   return result;
 }
 
+async function UpdateProductAvailabilityFromDb(productId, isAvailable) {
+  const changeIsAvailableValue = isAvailable === "true" ? "false" : "true";
+  const statement = productsDb.prepare(
+    "UPDATE Products SET isAvailable = ? WHERE product_id = ?"
+  );
+  const result = statement.run(changeIsAvailableValue, productId);
+  return result;
+}
+
+async function DeleteProductFromDb(productId) {
+  const statementGetImgPath = productsDb.prepare(
+    "SELECT path FROM ProductImages WHERE product_id = ?"
+  );
+  const resultGetImgPath = statementGetImgPath.all(productId);
+
+  const statementDeleteImg = productsDb.prepare(
+    "DELETE FROM ProductImages WHERE product_id = ?"
+  );
+  statementDeleteImg.run(productId);
+
+  const statementDeleteProduct = productsDb.prepare(
+    "DELETE FROM Products WHERE product_id = ?"
+  );
+  const result = statementDeleteProduct.run(productId);
+  if (result.changes > 0) {
+    return { success: true, imagePath: resultGetImgPath };
+  } else {
+    return { success: false };
+  }
+}
+
 module.exports = {
   usersDb,
   productsDb,
   addProductDB: addProductDb,
-  updateProductDb,
-  updateProductDb,
+  updateProductDb: updateProductDb,
   RetrieveAllProductData: RetrieveAllProductData,
   RetrieveProductData: RetrieveProductData,
   RemoveProductImageFromDb: RemoveProductImageFromDb,
+  UpdateProductAvailabilityFromDb: UpdateProductAvailabilityFromDb,
+  DeleteProductFromDb: DeleteProductFromDb,
 };

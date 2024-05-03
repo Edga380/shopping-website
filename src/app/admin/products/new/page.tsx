@@ -4,8 +4,10 @@ import AdminProductFrom from "../_components/ProductForm";
 export default function AdminNewProductPage() {
   return (
     <>
-      <PageHeader>Add Product</PageHeader>
-      <AdminProductFrom></AdminProductFrom>
+      <div className="w-2/4 mx-auto">
+        <PageHeader>Add Product</PageHeader>
+        <AdminProductFrom></AdminProductFrom>
+      </div>
     </>
   );
 }

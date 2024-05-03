@@ -14,6 +14,7 @@ const config: Config = {
         "color-pallet-03": "rgb(229, 180, 167)",
         "color-pallet-04": "rgb(217, 155, 141)",
         "text-color-dark-green": "rgb(70, 69, 39)",
+        "bg-black-transparent": "rgba(0, 0, 0, 0.5)",
       },
     },
   },

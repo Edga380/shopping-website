@@ -6,10 +6,11 @@ import { join, dirname } from "path";
 
 export default async function addSlideShowImage(
   imageSpot: number,
-  formData: FormData
+  imageFileFormData: FormData
 ) {
   const database = newClient();
-  const imageData = formData.get("image") as File;
+
+  const newImageFile = imageFileFormData.get("newImage") as File;
 
   try {
     const result = database
@@ -21,11 +22,11 @@ export default async function addSlideShowImage(
         VALUES (?, ?)
         `
       )
-      .run(imageSpot, imageData.name);
+      .run(imageSpot, newImageFile.name);
 
     if (result) {
-      const imageBuffer = await imageData.arrayBuffer();
-      const filePath = join("public", "slideShow", imageData.name);
+      const imageBuffer = await newImageFile.arrayBuffer();
+      const filePath = join("public", "slideShow", newImageFile.name);
       await fs.mkdir(dirname(filePath), { recursive: true });
       await fs.writeFile(filePath, Buffer.from(imageBuffer));
     }

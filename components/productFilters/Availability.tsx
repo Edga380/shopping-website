@@ -1,7 +1,7 @@
 "use client";
 
-import DropDownMenu from "../DropDownMenu";
-import { DropDownMenuOption } from "../DropDownMenu";
+import DropDownMenu from "../DropDownMenuOption";
+import { DropDownMenuOption } from "../DropDownMenuOption";
 
 type AvailabilityFilterProps = {
   availableFilter: () => void;

@@ -2,8 +2,8 @@
 
 import ProductCard from "./ProductCard";
 import { UpdatedProduct } from "../../types/databaseTypes";
-import DropDownMenu from "../DropDownMenu";
-import { DropDownMenuOption } from "../DropDownMenu";
+import DropDownMenu from "../DropDownMenuOption";
+import { DropDownMenuOption } from "../DropDownMenuOption";
 import { useEffect, useState, useMemo } from "react";
 import PriceSlider from "./PriceSlider";
 import AvailabilityFilter from "../productFilters/Availability";

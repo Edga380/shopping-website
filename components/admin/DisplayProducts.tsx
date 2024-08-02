@@ -3,12 +3,21 @@
 import ProductDropdownMenu from "./ProductDropDownMenu";
 import { formatCurrency } from "../../utils/formatters";
 import { UpdatedProduct } from "../../types/databaseTypes";
+import { useState } from "react";
 
 export default function DisplayProducts({
   products,
 }: {
   products: UpdatedProduct[];
 }) {
+  const [activeDropDownIndex, setActiveDropDownIndex] = useState<number | null>(
+    null
+  );
+
+  const handleToggleDropDown = (index: number) => {
+    setActiveDropDownIndex(index === activeDropDownIndex ? null : index);
+  };
+
   return (
     <>
       {products.map((product, index) => (
@@ -36,8 +45,11 @@ export default function DisplayProducts({
           </div>
           <ProductDropdownMenu
             productId={product.product_id}
+            productName={product.name}
             isAvailable={product.isAvailable}
             productImages={product.images}
+            isActive={activeDropDownIndex === index}
+            onToggle={() => handleToggleDropDown(index)}
           ></ProductDropdownMenu>
         </div>
       ))}

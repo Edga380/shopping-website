@@ -79,19 +79,32 @@ export default function DisplayProducts({ products }: DisplayProductsProps) {
       }, []);
       setGenders(uniqueGenders);
 
-      /*
       const uniqueColors = products.reduce<string[]>((colors, product) => {
-        const normalizedColor = product.color.toLowerCase();
-        if (!colors.some((color) => color.toLowerCase() === normalizedColor)) {
-          colors.push(
-            normalizedColor.charAt(0).toLocaleUpperCase() +
-              normalizedColor.slice(1)
-          );
-        }
+        product.colors.forEach((productColor) => {
+          const normalizedColor = productColor.toLowerCase();
+          if (
+            !colors.some((color) => color.toLowerCase() === normalizedColor)
+          ) {
+            colors.push(
+              normalizedColor.charAt(0).toLocaleUpperCase() +
+                normalizedColor.slice(1)
+            );
+          }
+        });
         return colors;
       }, []);
       setColors(uniqueColors);
-      */
+
+      const uniqueSizes = products.reduce<string[]>((sizes, product) => {
+        product.sizes.forEach((productSize) => {
+          const normalizedSize = productSize.toLowerCase();
+          if (!sizes.some((size) => size.toLowerCase() === normalizedSize)) {
+            sizes.push(normalizedSize.toUpperCase());
+          }
+        });
+        return sizes;
+      }, []);
+      setSizes(uniqueSizes);
     }
   }, [products]);
 
@@ -150,6 +163,20 @@ export default function DisplayProducts({ products }: DisplayProductsProps) {
       });
     }
 
+    if (filterBySizes) {
+      result = result.filter((product) => {
+        return filterBySizes.some((filterBySize) => {
+          const normalizedProductSize = product.sizes.map((size) =>
+            size.toLowerCase()
+          );
+          if (normalizedProductSize.includes(filterBySize)) {
+            return true;
+          }
+          return false;
+        });
+      });
+    }
+
     if (sortByPrice) {
       result = result.sort((a, b) =>
         sortByPrice === "lowHigh"
@@ -167,6 +194,7 @@ export default function DisplayProducts({ products }: DisplayProductsProps) {
     filterByCategories,
     filterByGenders,
     filterByColors,
+    filterBySizes,
   ]);
 
   useEffect(() => {
@@ -246,6 +274,24 @@ export default function DisplayProducts({ products }: DisplayProductsProps) {
     });
   };
 
+  const handleFilterBySize = (filterBy: string) => {
+    setFilterBySizes((prevSize) => {
+      const normalizedFilterBy = filterBy.toLowerCase();
+      if (prevSize) {
+        if (prevSize.includes(normalizedFilterBy)) {
+          const updatedSizes = prevSize.filter(
+            (size) => size !== normalizedFilterBy
+          );
+          return updatedSizes.length > 0 ? updatedSizes : null;
+        } else {
+          return [...prevSize, normalizedFilterBy];
+        }
+      } else {
+        return [normalizedFilterBy];
+      }
+    });
+  };
+
   return (
     <div className="flex my-10">
       <div className="bg-color-pallet-01 w-[600px] rounded-s-large p-4">
@@ -255,6 +301,8 @@ export default function DisplayProducts({ products }: DisplayProductsProps) {
           unAvailableFilter={() =>
             handleAvailabilityFilterChange("unAvailable")
           }
+          products={products}
+          storedProducts={storedProducts}
         />
         <DropDownMenu name="Price">
           <PriceSlider
@@ -270,7 +318,16 @@ export default function DisplayProducts({ products }: DisplayProductsProps) {
               name={category}
               absolute={false}
               isInput={true}
-              amount={category.length}
+              totalAmount={
+                products.filter(
+                  (product) => product.category === category.toLocaleLowerCase()
+                ).length
+              }
+              filteredAmount={
+                storedProducts.filter(
+                  (product) => product.category === category.toLocaleLowerCase()
+                ).length
+              }
               onClick={() => handleFilterByCategory(category)}
             />
           ))}
@@ -282,7 +339,16 @@ export default function DisplayProducts({ products }: DisplayProductsProps) {
               name={gender}
               absolute={false}
               isInput={true}
-              amount={gender.length}
+              totalAmount={
+                products.filter(
+                  (product) => product.gender === gender.toLowerCase()
+                ).length
+              }
+              filteredAmount={
+                storedProducts.filter(
+                  (product) => product.gender === gender.toLowerCase()
+                ).length
+              }
               onClick={() => handleFilterByGender(gender)}
             />
           ))}
@@ -295,20 +361,38 @@ export default function DisplayProducts({ products }: DisplayProductsProps) {
               absolute={false}
               isInput={true}
               iscolor={true}
-              amount={color.length}
+              totalAmount={
+                products.filter((product) =>
+                  product.colors.some((productColor) => productColor === color)
+                ).length
+              }
+              filteredAmount={
+                storedProducts.filter((product) =>
+                  product.colors.some((productColor) => productColor === color)
+                ).length
+              }
               onClick={() => handleFilterByColor(color)}
             />
           ))}
         </DropDownMenu>
         <DropDownMenu name="Size">
-          {colors.map((color) => (
+          {sizes.map((size) => (
             <DropDownMenuOption
-              key={color}
-              name={color}
+              key={size}
+              name={size}
               absolute={false}
               isInput={true}
-              amount={color.length}
-              onClick={() => handleFilterByColor(color)}
+              totalAmount={
+                products.filter((product) =>
+                  product.sizes.some((productSize) => productSize === size)
+                ).length
+              }
+              filteredAmount={
+                storedProducts.filter((product) =>
+                  product.sizes.some((productSize) => productSize === size)
+                ).length
+              }
+              onClick={() => handleFilterBySize(size)}
             />
           ))}
         </DropDownMenu>

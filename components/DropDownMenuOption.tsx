@@ -33,7 +33,8 @@ type DropDownMenuOptionProps = {
   bgColor?: boolean;
   isInput: boolean;
   iscolor?: boolean;
-  amount?: number;
+  totalAmount?: number;
+  filteredAmount?: number;
   onClick?: () => void;
 };
 
@@ -43,7 +44,8 @@ export function DropDownMenuOption({
   bgColor = true,
   isInput = false,
   iscolor = false,
-  amount,
+  totalAmount,
+  filteredAmount,
   onClick,
 }: DropDownMenuOptionProps) {
   return (
@@ -58,7 +60,16 @@ export function DropDownMenuOption({
           {!iscolor ? (
             <div className="flex items-center text-base font-semibold text-text-color-dark-green self-center ml-2">
               {name}
-              {amount && <div className="ml-2 text-sm">{`(${amount})`}</div>}
+              {filteredAmount !== undefined && filteredAmount > 0 ? (
+                <div className="ml-2 text-sm">{`(${filteredAmount}/`}</div>
+              ) : (
+                <div className="ml-2 text-sm">{`(0/`}</div>
+              )}
+              {totalAmount !== undefined && totalAmount > 0 ? (
+                <div className="text-sm">{`${totalAmount})`}</div>
+              ) : (
+                <div className="text-sm">{`0)`}</div>
+              )}
             </div>
           ) : (
             <div className="flex items-center text-base font-semibold text-text-color-dark-green self-center ml-2">
@@ -73,7 +84,16 @@ export function DropDownMenuOption({
                 }}
               ></div>
               {name}
-              {amount && <div className="ml-2 text-sm">{`(${amount})`}</div>}
+              {filteredAmount !== undefined && filteredAmount > 0 ? (
+                <div className="ml-2 text-sm">{`(${filteredAmount}/`}</div>
+              ) : (
+                <div className="ml-2 text-sm">{`(0/`}</div>
+              )}
+              {totalAmount !== undefined && totalAmount > 0 ? (
+                <div className="text-sm">{`${totalAmount})`}</div>
+              ) : (
+                <div className="text-sm">{`0)`}</div>
+              )}
             </div>
           )}
         </>

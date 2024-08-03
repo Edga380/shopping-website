@@ -18,13 +18,7 @@ export default function BestSellers() {
 
 async function FetchProducts() {
   const products = await getBestSellerProducts();
-  return products.map((product: any) => (
-    <ProductCard
-      key={product.product_id}
-      src={`/products/${product.images[0]}`}
-      name={product.name}
-      price={product.priceInPennies / 100}
-      productLink={`/products/${product.product_id}/product`}
-    ></ProductCard>
+  return products.map((product) => (
+    <ProductCard key={product.product_id} product={product}></ProductCard>
   ));
 }

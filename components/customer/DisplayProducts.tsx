@@ -426,10 +426,7 @@ export default function DisplayProducts({ products }: DisplayProductsProps) {
             {storedProducts.map((product) => (
               <ProductCard
                 key={product.product_id}
-                src={`/products/${product.images[0]}`}
-                name={product.name}
-                price={product.priceInPennies / 100}
-                productLink={`/products/${product.product_id}/product`}
+                product={product}
               ></ProductCard>
             ))}
           </div>

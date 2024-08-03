@@ -19,12 +19,6 @@ export default function Newest() {
 async function FetchProducts() {
   const products = await getNewestProducts();
   return products.map((product) => (
-    <ProductCard
-      key={product.product_id}
-      src={`/products/${product.images[0]}`}
-      name={product.name}
-      price={product.priceInPennies / 100}
-      productLink={`/products/${product.product_id}/product`}
-    ></ProductCard>
+    <ProductCard key={product.product_id} product={product}></ProductCard>
   ));
 }

@@ -2,12 +2,20 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { UpdatedProduct } from "../../types/databaseTypes";
-import { NewestBestSellerProducts } from "../../types/databaseTypes";
+import {
+  NewestBestSellerProducts,
+  UpdatedProduct,
+} from "../../types/databaseTypes";
 
 type ProductCardProps = {
   product: UpdatedProduct | NewestBestSellerProducts;
 };
+
+function isUpdatedProduct(
+  product: UpdatedProduct | NewestBestSellerProducts
+): product is UpdatedProduct {
+  return (product as UpdatedProduct).colors !== undefined;
+}
 
 export default function ProductCard({ product }: ProductCardProps) {
   return (
@@ -21,7 +29,7 @@ export default function ProductCard({ product }: ProductCardProps) {
             alt={product.name}
             className="transition-transform duration-300 transform hover:scale-110"
           />
-          {product.colors && (
+          {isUpdatedProduct(product) && product.colors && (
             <div className="absolute bottom-10 flex bg-color-pallet-04 py-1 rounded-xl">
               {product.colors.map((color) => (
                 <div
@@ -37,7 +45,7 @@ export default function ProductCard({ product }: ProductCardProps) {
               ))}
             </div>
           )}
-          {product.sizes && (
+          {isUpdatedProduct(product) && product.sizes && (
             <div className="absolute bottom-1 bg-color-pallet-04 p-1 rounded-lg">
               {product.sizes
                 .sort((a, b) => {

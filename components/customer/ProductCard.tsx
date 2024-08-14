@@ -31,8 +31,9 @@ export default function ProductCard({ product }: ProductCardProps) {
           />
           {isUpdatedProduct(product) && product.colors && (
             <div className="absolute bottom-10 flex bg-color-pallet-04 py-1 rounded-xl">
-              {product.colors.map((color) => (
+              {product.colors.map((color, index) => (
                 <div
+                  key={color + index}
                   className="rounded-full w-6 h-6 mx-1"
                   style={{
                     background: `${

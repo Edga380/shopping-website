@@ -422,10 +422,10 @@ export default function DisplayProducts({ products }: DisplayProductsProps) {
           </div>
         </div>
         {storedProducts.length > 0 && !loading ? (
-          <div className=" grid grid-cols-3">
-            {storedProducts.map((product) => (
+          <div className="grid md:grid-cols-1 lg:grid-cols-3">
+            {storedProducts.map((product, index) => (
               <ProductCard
-                key={product.product_id}
+                key={product.name + index}
                 product={product}
               ></ProductCard>
             ))}

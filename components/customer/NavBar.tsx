@@ -3,63 +3,136 @@
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import React, { ComponentProps, ReactNode } from "react";
+import React, { useEffect, useState } from "react";
 
-export default function NavBar({ children }: { children: ReactNode }) {
-  return (
-    <nav className="bg-color-pallet-02 sticky flex justify-between items-center h-16">
-      {children}
-    </nav>
-  );
-}
-
-export function NavLink(props: Omit<ComponentProps<typeof Link>, "classname">) {
+export default function NavBar() {
   const pathname = usePathname();
-  return (
-    <Link
-      {...props}
-      className={`text-lg font-bold text-text-color-dark-green mr-10 px-3 py-2 rounded hover:bg-color-pallet-04 ${
-        pathname === props.href && "underline"
-      }`}
-    ></Link>
-  );
-}
+  const [showNav, setShowNav] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
+  const [searchBarVisible, setSearchBarVisible] = useState(false);
 
-export function NavLinkLogo(
-  props: Omit<ComponentProps<typeof Link>, "classname">
-) {
-  return (
-    <Link {...props}>
-      <Image
-        src="/dodo_ir_sese_sm_text_logo.svg"
-        width={100}
-        height={60}
-        alt="Brand logo"
-        className="transition-transform duration-300 transform hover:scale-110 mx-6"
-      ></Image>
-    </Link>
-  );
-}
+  const handleScroll = () => {
+    if (typeof window !== "undefined") {
+      if (window.scrollY < lastScrollY || window.scrollY < 50) {
+        setShowNav(true);
+      } else {
+        setShowNav(false);
+      }
+      setLastScrollY(window.scrollY);
+    }
+  };
 
-interface NavLinkImageButtonProps {
-  href: string;
-  imagePath: string;
-  width: number;
-  height: number;
-  alt: string;
-}
+  const toggleSearchBar = () => {
+    setSearchBarVisible(!searchBarVisible);
+  };
 
-export function NavLinkImageButton(props: NavLinkImageButtonProps) {
-  const { href, imagePath, width, height, alt } = props;
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      window.addEventListener("scroll", handleScroll);
+      return () => {
+        window.removeEventListener("scroll", handleScroll);
+      };
+    }
+  }, [lastScrollY]);
+
   return (
-    <Link className="mr-5" href={href}>
-      <Image
-        src={imagePath}
-        width={width}
-        height={height}
-        alt={alt}
-        className="transition-transform duration-300 transform hover:scale-110"
-      ></Image>
-    </Link>
+    <>
+      <nav
+        className="bg-color-pallet-02 fixed top-0 left-0 right-0 flex justify-between items-center h-16 transition-transform duration-300 z-30"
+        style={{
+          transform: showNav ? "translateY(0)" : "translateY(-100%)",
+        }}
+      >
+        <Link href={"/"}>
+          <Image
+            src="/dodo_ir_sese_sm_text_logo.svg"
+            width={100}
+            height={60}
+            alt="Brand logo"
+            className="transition-transform duration-300 transform hover:scale-110 mx-6"
+          ></Image>
+        </Link>
+        <div className="justify-center">
+          <Link
+            href={"/"}
+            className={`text-lg font-bold text-text-color-dark-green mr-10 px-3 py-2 rounded hover:bg-color-pallet-04 ${
+              pathname === "/" && "underline"
+            }`}
+          >
+            Home
+          </Link>
+          <Link
+            href={"/products"}
+            className={`text-lg font-bold text-text-color-dark-green mr-10 px-3 py-2 rounded hover:bg-color-pallet-04 ${
+              pathname === "/products" && "underline"
+            }`}
+          >
+            Products
+          </Link>
+        </div>
+        <div className="flex justify-center">
+          <button onClick={toggleSearchBar}>
+            <Image
+              src="/search_img.svg"
+              width={30}
+              height={30}
+              alt="Search icon"
+              className="mr-5 transition-transform duration-300 transform hover:scale-110"
+            />
+          </button>
+          <Link className="mr-5" href={"/"}>
+            <Image
+              src="/user_img.svg"
+              width={30}
+              height={30}
+              alt="User profile icon"
+              className="transition-transform duration-300 transform hover:scale-110"
+            ></Image>
+          </Link>
+          <Link className="mr-5" href={"/"}>
+            <Image
+              src="/cart_img.svg"
+              width={30}
+              height={30}
+              alt="Cart icon"
+              className="transition-transform duration-300 transform hover:scale-110"
+            ></Image>
+          </Link>
+        </div>
+      </nav>
+      <div
+        className={`fixed h-full w-full bg-[rgba(0,0,0,0.6)] z-20 transition-opacity duration-300 
+        ${searchBarVisible ? "opacity-100" : "opacity-0 pointer-events-none"}`}
+      ></div>
+      <div
+        className={`bg-color-pallet-02 fixed top-0 left-0 right-0 h-20 flex items-center justify-center z-30 transition-transform duration-300
+            ${
+              searchBarVisible
+                ? "transform translate-y-0"
+                : "transform -translate-y-full"
+            }`}
+      >
+        <button onClick={toggleSearchBar}>
+          <div className="h-8 w-8 mr-3 relative transition-transform duration-300 transform hover:scale-110">
+            <div className="absolute h-8 w-1 bg-text-color-dark-green rounded rotate-45 left-4"></div>
+            <div className="absolute h-8 w-1 bg-text-color-dark-green rounded -rotate-45 left-4"></div>
+          </div>
+        </button>
+        <input
+          type="text"
+          className="w-1/3 h-10 p-2 rounded border border-text-color-dark-green"
+          placeholder="Search..."
+        />
+        <button onClick={toggleSearchBar}>
+          <Image
+            src="/search_img.svg"
+            width={30}
+            height={30}
+            alt="Search icon"
+            className="ml-3 transition-transform duration-300 transform hover:scale-110"
+          />
+        </button>
+      </div>
+    </>
   );
 }

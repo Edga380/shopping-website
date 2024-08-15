@@ -4,12 +4,18 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import React, { useEffect, useState } from "react";
+import SearchProducts from "./SearchProducts";
+import { UpdatedProduct } from "../../types/databaseTypes";
+import { getAvailableProducts } from "../../database/models/product/getAvailableProducts";
+import { useSearch } from "./SearchContext";
 
 export default function NavBar() {
   const pathname = usePathname();
   const [showNav, setShowNav] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
   const [searchBarVisible, setSearchBarVisible] = useState(false);
+  const [products, setProducts] = useState<UpdatedProduct[]>([]);
+  const { searchInput, setSearchInput } = useSearch();
 
   const handleScroll = () => {
     if (typeof window !== "undefined") {
@@ -20,6 +26,10 @@ export default function NavBar() {
       }
       setLastScrollY(window.scrollY);
     }
+  };
+
+  const handleSearchInput = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchInput(event.target.value);
   };
 
   const toggleSearchBar = () => {
@@ -34,6 +44,17 @@ export default function NavBar() {
       };
     }
   }, [lastScrollY]);
+
+  useEffect(() => {
+    const fetchAvailableProductsData = async () => {
+      const productsData = await getAvailableProducts();
+      if (!productsData) return;
+      setProducts(productsData);
+    };
+    if (products.length === 0) {
+      fetchAvailableProductsData();
+    }
+  }, [searchBarVisible]);
 
   return (
     <>
@@ -101,9 +122,15 @@ export default function NavBar() {
         </div>
       </nav>
       <div
-        className={`fixed h-full w-full bg-[rgba(0,0,0,0.6)] z-20 transition-opacity duration-300 
+        className={`fixed h-full w-full bg-[rgba(0,0,0,0.6)] z-20 transition-opacity duration-300
         ${searchBarVisible ? "opacity-100" : "opacity-0 pointer-events-none"}`}
-      ></div>
+      >
+        <SearchProducts
+          products={products}
+          searchInput={searchInput}
+          toggleSearchBar={toggleSearchBar}
+        />
+      </div>
       <div
         className={`bg-color-pallet-02 fixed top-0 left-0 right-0 h-20 flex items-center justify-center z-30 transition-transform duration-300
             ${
@@ -114,14 +141,15 @@ export default function NavBar() {
       >
         <button onClick={toggleSearchBar}>
           <div className="h-8 w-8 mr-3 relative transition-transform duration-300 transform hover:scale-110">
-            <div className="absolute h-8 w-1 bg-text-color-dark-green rounded rotate-45 left-4"></div>
-            <div className="absolute h-8 w-1 bg-text-color-dark-green rounded -rotate-45 left-4"></div>
+            <div className="absolute h-8 w-[0.1rem] bg-text-color-dark-green rounded rotate-45 left-4"></div>
+            <div className="absolute h-8 w-[0.1rem] bg-text-color-dark-green rounded -rotate-45 left-4"></div>
           </div>
         </button>
         <input
           type="text"
           className="w-1/3 h-10 p-2 rounded border border-text-color-dark-green"
           placeholder="Search..."
+          onChange={handleSearchInput}
         />
         <button onClick={toggleSearchBar}>
           <Image

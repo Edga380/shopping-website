@@ -7,12 +7,14 @@ import { DropDownMenuOption } from "../DropDownMenuOption";
 import { useEffect, useState, useMemo } from "react";
 import PriceSlider from "./PriceSlider";
 import AvailabilityFilter from "../productFilters/Availability";
+import { useSearch } from "./SearchContext";
 
 type DisplayProductsProps = {
   products: UpdatedProduct[];
 };
 
 export default function DisplayProducts({ products }: DisplayProductsProps) {
+  const { searchInput, setSearchInput } = useSearch();
   const [storedProducts, setStoredProducts] =
     useState<UpdatedProduct[]>(products);
   const [loading, setLoading] = useState<boolean>(false);
@@ -111,6 +113,12 @@ export default function DisplayProducts({ products }: DisplayProductsProps) {
   const filteredProducts = useMemo(() => {
     let result = products;
 
+    if (searchInput) {
+      result = result.filter((product) =>
+        product.name.toLowerCase().includes(searchInput.toLowerCase())
+      );
+    }
+
     if (availabilityFilter.available && !availabilityFilter.unAvailable) {
       result = result.filter((product) => product.stock === 0);
     } else if (
@@ -188,6 +196,7 @@ export default function DisplayProducts({ products }: DisplayProductsProps) {
     return result;
   }, [
     products,
+    searchInput,
     availabilityFilter,
     priceRange,
     sortByPrice,
@@ -290,6 +299,10 @@ export default function DisplayProducts({ products }: DisplayProductsProps) {
         return [normalizedFilterBy];
       }
     });
+  };
+
+  const handleClearSearchInput = () => {
+    setSearchInput(null);
   };
 
   return (
@@ -398,27 +411,40 @@ export default function DisplayProducts({ products }: DisplayProductsProps) {
         </DropDownMenu>
       </div>
       <div className="bg-color-pallet-04 w-[100%] rounded-large">
-        <div className="flex flex-row justify-end p-2">
-          <div className="mx-2 text-text-color-dark-green font-bold">
-            <DropDownMenu name="Sort">
-              <div className="absolute z-10">
-                <DropDownMenuOption
-                  name="Price low/high"
-                  absolute={false}
-                  isInput={false}
-                  onClick={() => handleSortByPrice("lowHigh")}
-                ></DropDownMenuOption>
-                <DropDownMenuOption
-                  name="Price high/low"
-                  absolute={false}
-                  isInput={false}
-                  onClick={() => handleSortByPrice("highLow")}
-                ></DropDownMenuOption>
-              </div>
-            </DropDownMenu>
-          </div>
-          <div className="mx-2 text-text-color-dark-green font-bold">
-            Products: {storedProducts.length}
+        <div className="flex flex-row p-2">
+          {searchInput && (
+            <div className="mx-2 text-text-color-dark-green font-bold">
+              <button onClick={handleClearSearchInput}>
+                <div className="h-4 w-4 mr-3 relative transition-transform duration-300 transform hover:scale-110">
+                  <div className="absolute h-4 w-[0.1rem] bg-text-color-dark-green rounded rotate-45 left-4"></div>
+                  <div className="absolute h-4 w-[0.1rem] bg-text-color-dark-green rounded -rotate-45 left-4"></div>
+                </div>
+              </button>
+              Search: {searchInput}
+            </div>
+          )}
+          <div className="flex flex-row ml-auto">
+            <div className="mx-2 text-text-color-dark-green font-bold">
+              <DropDownMenu name="Sort">
+                <div className="absolute z-10">
+                  <DropDownMenuOption
+                    name="Price low/high"
+                    absolute={false}
+                    isInput={false}
+                    onClick={() => handleSortByPrice("lowHigh")}
+                  ></DropDownMenuOption>
+                  <DropDownMenuOption
+                    name="Price high/low"
+                    absolute={false}
+                    isInput={false}
+                    onClick={() => handleSortByPrice("highLow")}
+                  ></DropDownMenuOption>
+                </div>
+              </DropDownMenu>
+            </div>
+            <div className="mx-2 text-text-color-dark-green font-bold">
+              Products: {storedProducts.length}
+            </div>
           </div>
         </div>
         {storedProducts.length > 0 && !loading ? (

@@ -31,10 +31,21 @@ cd shopping-website
 npm install
 ```
 
+## Install seed data:
+
+```
+node database/seedData.js
+```
+
+```
+
 ## Run application:
 
 ```
+
 npm run dev
+
 ```
 
 Open your web browser and navigate to http://localhost:3000 to access the application.
+```

@@ -105,7 +105,7 @@ export default function NavBar() {
               className="mr-5 transition-transform duration-300 transform hover:scale-110"
             />
           </button>
-          <Link className="mr-5" href={"/"}>
+          <Link className="mr-5" href={"/profile"}>
             <Image
               src="/user_img.svg"
               width={30}

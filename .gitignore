@@ -37,7 +37,7 @@ yarn-error.log*
 next-env.d.ts
 
 # database
-db*
+database/database.db*
 
 # images
 

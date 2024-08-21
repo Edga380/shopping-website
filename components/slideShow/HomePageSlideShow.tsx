@@ -24,7 +24,7 @@ export default function SlideShow({ slideShowImages }: any) {
     }
   };
   return (
-    <div className="my-10 relative min-h-[500px] md:min-h-[600px] lg:min-h-[700px] rounded-3xl overflow-hidden">
+    <div className="my-10 relative h-[500px] md:h-[600px] lg:h-[700px] rounded-3xl overflow-hidden">
       <div className="absolute top-0 left-0 h-full flex z-10">
         <button
           className="max-w-6 ml-2 self-center transition-transform duration-300 transform hover:scale-110"
@@ -66,12 +66,12 @@ export default function SlideShow({ slideShowImages }: any) {
           ))}
         </div>
       </div>
-      <button>
+      <button className="w-full h-full">
         <Image
           src={`/slideShow/${storedSlideshowImages[currentSlide].path}`}
-          layout="fill"
-          objectFit="cover"
-          className="bg-color-pallet-01"
+          height={200}
+          width={200}
+          className="w-full h-full"
           alt="Alt"
         ></Image>
       </button>

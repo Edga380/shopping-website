@@ -307,7 +307,7 @@ export default function DisplayProducts({ products }: DisplayProductsProps) {
 
   return (
     <div className="flex my-10">
-      <div className="bg-color-pallet-01 w-[600px] rounded-s-large p-4">
+      <div className="bg-color-pallet-01 w-[24rem] rounded-s-large p-4">
         <h2 className="text-3xl text-text-color-dark-green py-2">Filters:</h2>
         <AvailabilityFilter
           availableFilter={() => handleAvailabilityFilterChange("available")}
@@ -413,14 +413,14 @@ export default function DisplayProducts({ products }: DisplayProductsProps) {
       <div className="bg-color-pallet-04 w-[100%] rounded-large">
         <div className="flex flex-row p-2">
           {searchInput && (
-            <div className="mx-2 text-text-color-dark-green font-bold">
+            <div className="bg-color-pallet-01 mx-2 text-text-color-dark-green font-bold rounded p-2">
               <button onClick={handleClearSearchInput}>
                 <div className="h-4 w-4 mr-3 relative transition-transform duration-300 transform hover:scale-110">
                   <div className="absolute h-4 w-[0.1rem] bg-text-color-dark-green rounded rotate-45 left-4"></div>
                   <div className="absolute h-4 w-[0.1rem] bg-text-color-dark-green rounded -rotate-45 left-4"></div>
                 </div>
               </button>
-              Search: {searchInput}
+              {searchInput}
             </div>
           )}
           <div className="flex flex-row ml-auto">

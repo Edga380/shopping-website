@@ -36,6 +36,10 @@ export default function NavBar() {
     setSearchBarVisible(!searchBarVisible);
   };
 
+  const handleClearSearchInput = () => {
+    setSearchInput(null);
+  };
+
   useEffect(() => {
     if (typeof window !== "undefined") {
       window.addEventListener("scroll", handleScroll);
@@ -129,6 +133,7 @@ export default function NavBar() {
           products={products}
           searchInput={searchInput}
           toggleSearchBar={toggleSearchBar}
+          handleClearSearchInput={handleClearSearchInput}
         />
       </div>
       <div
@@ -149,9 +154,10 @@ export default function NavBar() {
           type="text"
           className="w-1/3 h-10 p-2 rounded border border-text-color-dark-green"
           placeholder="Search..."
+          value={searchInput ? searchInput : ""}
           onChange={handleSearchInput}
         />
-        <button onClick={toggleSearchBar}>
+        <Link href={"/products"} onClick={toggleSearchBar}>
           <Image
             src="/search_img.svg"
             width={30}
@@ -159,7 +165,7 @@ export default function NavBar() {
             alt="Search icon"
             className="ml-3 transition-transform duration-300 transform hover:scale-110"
           />
-        </button>
+        </Link>
       </div>
     </>
   );

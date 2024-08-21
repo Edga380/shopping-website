@@ -1,3 +1,5 @@
+"use server";
+
 import { OriginalProduct, UpdatedProduct } from "../../../types/databaseTypes";
 import newClient from "../../utils/newClient";
 

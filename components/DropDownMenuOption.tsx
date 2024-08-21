@@ -13,12 +13,12 @@ export default function DropDownMenu({ name, children }: DropDownMenuProps) {
     <div>
       <div>
         <button
-          className="bg-color-pallet-03 text-lg font-bold text-text-color-dark-green my-1 px-6 rounded hover:bg-color-pallet-04 self-center flex"
+          className="bg-color-pallet-03 text-lg font-bold text-text-color-dark-green my-1 px-6 rounded hover:bg-color-pallet-04 self-center flex w-full"
           onClick={() => setDisplayDropdownMenu(!displayDropdownMenu)}
         >
           <span>{name}</span>
           <div className="ml-2">
-            {displayDropdownMenu ? <p>&darr;</p> : <p>&uarr;</p>}
+            {displayDropdownMenu ? <p>&uarr;</p> : <p>&darr;</p>}
           </div>
         </button>
       </div>

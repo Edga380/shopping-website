@@ -28,7 +28,7 @@ export default function PriceSlider({
   };
 
   return (
-    <div className="bg-color-pallet-03 text-lg font-bold text-text-color-dark-green my-1 px-6 py-2 rounded self-center flex">
+    <div className="bg-color-pallet-03 font-bold text-text-color-dark-green my-1 px-6 py-2 rounded self-center flex">
       <Slider
         label="Price Range"
         step={5}
@@ -50,8 +50,8 @@ export default function PriceSlider({
           base: "max-w-md",
           filler: "bg-color-pallet-04",
           labelWrapper: "mb-2",
-          label: "font-large text-text-color-dark-green text-large",
-          value: "font-large text-text-color-dark-green text-large",
+          label: "font-large text-text-color-dark-green",
+          value: "font-large text-text-color-dark-green",
           thumb: [
             "transition-size",
             "bg-color-pallet-04",

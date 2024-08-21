@@ -7,10 +7,12 @@ export default function SearchProducts({
   products,
   searchInput,
   toggleSearchBar,
+  handleClearSearchInput,
 }: {
   products: UpdatedProduct[];
   searchInput: string | null;
   toggleSearchBar: () => void;
+  handleClearSearchInput: () => void;
 }) {
   return (
     searchInput && (
@@ -29,6 +31,7 @@ export default function SearchProducts({
               key={filteredProduct.product_id}
               product={filteredProduct}
               toggleSearchBar={toggleSearchBar}
+              handleClearSearchInput={handleClearSearchInput}
             />
           ))}
       </div>

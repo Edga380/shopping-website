@@ -3,7 +3,11 @@
 import newClient from "../../utils/newClient";
 import bcrypt from "bcrypt";
 
-export async function RegisterUser(email: string, password: string) {
+export async function RegisterUser(
+  username: string,
+  email: string,
+  password: string
+) {
   const database = newClient();
 
   const hashedPassword = await bcrypt.hash(password, 10);
@@ -18,11 +22,30 @@ export async function RegisterUser(email: string, password: string) {
         VALUES (?, ?, ?)
         `
       )
-      .run("Unknown", hashedPassword, email);
+      .run(username, hashedPassword, email);
 
-    return { success: true, message: "User registered successfully." };
-  } catch (error) {
-    console.error("Failed to register new user: ", error);
+    return { success: true, message: "Registration successful." };
+  } catch (error: any) {
+    if (error.code === "SQLITE_CONSTRAINT_UNIQUE") {
+      if (error.message.includes("Users.username")) {
+        return {
+          success: false,
+          message:
+            "The Username is already in use. Please use a different Username.",
+        };
+      }
+      if (error.message.includes("Users.email")) {
+        return {
+          success: false,
+          message:
+            "The Email address is already in use. Please use a different email.",
+        };
+      }
+      return {
+        success: false,
+        message: "Something went wrong. Try again later.",
+      };
+    }
     throw error;
   }
 }

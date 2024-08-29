@@ -5,13 +5,20 @@ import React, { useEffect, useState } from "react";
 import { RegisterUser } from "../../../../database/models/user/register";
 
 export default function Register() {
+  const [username, setUsername] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [confirmEmail, setConfirmEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState<string>("");
   const [emailErrorMessage, setEmailErrorMessage] = useState<string>("");
   const [passwordErrorMessage, setPasswordErrorMessage] = useState<string>("");
-  const [message, setMessage] = useState<string>("");
+  const [storeMessage, setStoreMessage] = useState<{
+    message: string;
+    color: string;
+  }>({
+    message: "",
+    color: "",
+  });
   const [passwordDifficultyEntries, setPasswordDifficultyEntries] = useState({
     uppercase: false,
     lowercase: false,
@@ -65,6 +72,10 @@ export default function Register() {
     });
   }, [password, confirmPassword]);
 
+  const handleChangeUsername = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setUsername(event.target.value);
+  };
+
   const handleChangeEmail = (event: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(event.target.value);
   };
@@ -97,14 +108,19 @@ export default function Register() {
     }
 
     try {
-      const response = await RegisterUser(email, password);
+      const response = await RegisterUser(username, email, password);
 
-      if (response) {
-        setMessage(response.message);
+      if (response.success) {
+        setStoreMessage({ message: response.message, color: "green" });
+      } else {
+        setStoreMessage({ message: response.message, color: "red" });
       }
     } catch (error) {
       console.error("Error: ", error);
-      setMessage("Something unexpected happened, try again later.");
+      setStoreMessage({
+        message: "Something unexpected happened, try again later.",
+        color: "red",
+      });
     }
   };
 
@@ -114,27 +130,40 @@ export default function Register() {
         <div className="text-text-color-dark-green font-semibold text-3xl mt-14">
           Create account
         </div>
-        {emailErrorMessage ? (
-          <div className="text-red-600 font-semibold text-lg">
-            {emailErrorMessage}
-          </div>
-        ) : (
-          <div className="mt-7"></div>
-        )}
         <form
           onSubmit={handleSubmit}
           className="flex flex-col justify-center items-center"
         >
           <input
+            type="text"
+            placeholder="Username"
+            minLength={4}
+            maxLength={30}
+            className="w-96 h-10 mt-8 p-2 rounded-md"
+            onChange={handleChangeUsername}
+            required
+          ></input>
+          {emailErrorMessage ? (
+            <div className="text-red-600 font-semibold text-lg mt-2">
+              {emailErrorMessage}
+            </div>
+          ) : (
+            <div className="mt-7"></div>
+          )}
+          <input
             type="email"
             placeholder="Email"
-            className="w-96 h-10 mt-4 p-2 rounded-md"
+            minLength={10}
+            maxLength={30}
+            className="w-96 h-10 mt-2 p-2 rounded-md"
             onChange={handleChangeEmail}
             required
           ></input>
           <input
             type="email"
             placeholder="Confirm Email"
+            minLength={10}
+            maxLength={30}
             className="w-96 h-10 mt-4 p-2 rounded-md"
             onChange={handleChangeConfirmEmail}
             required
@@ -150,6 +179,7 @@ export default function Register() {
             type="password"
             placeholder="Password"
             minLength={8}
+            maxLength={30}
             className="w-96 h-10 mt-2 p-2 rounded-md"
             onChange={handleChangePassword}
             required
@@ -158,6 +188,7 @@ export default function Register() {
             type="password"
             placeholder="Confirm Password"
             minLength={8}
+            maxLength={30}
             className="w-96 h-10 mt-4 p-2 rounded-md"
             onChange={handleChangeConfirmPassword}
             required
@@ -178,6 +209,7 @@ export default function Register() {
           <div className="flex flex-row space-x-1">
             {[2, 3, 4, 5].map((baseNumber: number) => (
               <div
+                key={baseNumber}
                 className={`w-20 h-2 my-2 rounded-full`}
                 style={{
                   backgroundColor: passwordDifficultyBar(baseNumber),
@@ -194,9 +226,12 @@ export default function Register() {
             <span className="font-bold mx-1">number</span> and
             <span className="font-bold ml-1">symbol</span>.
           </div>
-          {message ? (
-            <div className="text-green-600 font-semibold text-lg">
-              {message}
+          {storeMessage.message ? (
+            <div
+              className="font-semibold text-lg"
+              style={{ color: storeMessage.color }}
+            >
+              {storeMessage.message}
             </div>
           ) : (
             <div className="mt-7"></div>

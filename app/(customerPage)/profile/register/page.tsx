@@ -4,12 +4,22 @@ import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { RegisterUser } from "../../../../database/models/user/register";
 
+type userDataProps = {
+  username: string;
+  email: string;
+  confirmEmail: string;
+  password: string;
+  confirmPassword: string;
+};
+
 export default function Register() {
-  const [username, setUsername] = useState<string>("");
-  const [email, setEmail] = useState<string>("");
-  const [confirmEmail, setConfirmEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
-  const [confirmPassword, setConfirmPassword] = useState<string>("");
+  const [userData, setUserData] = useState<userDataProps>({
+    username: "",
+    email: "",
+    confirmEmail: "",
+    password: "",
+    confirmPassword: "",
+  });
   const [emailErrorMessage, setEmailErrorMessage] = useState<string>("");
   const [passwordErrorMessage, setPasswordErrorMessage] = useState<string>("");
   const [storeMessage, setStoreMessage] = useState<{
@@ -52,53 +62,33 @@ export default function Register() {
 
   useEffect(() => {
     setEmailErrorMessage(
-      email !== confirmEmail && confirmEmail ? "Emails do not match." : ""
+      userData.email !== userData.confirmEmail && userData.confirmEmail
+        ? "Emails do not match."
+        : ""
     );
-  }, [email, confirmEmail]);
-
-  useEffect(() => {
     setPasswordErrorMessage(
-      password !== confirmPassword && confirmPassword
+      userData.password !== userData.confirmPassword && userData.confirmPassword
         ? "Passwords do not match"
         : ""
     );
 
     setPasswordDifficultyEntries({
-      uppercase: /(?=.*[A-Z])/.test(password),
-      lowercase: /(?=.*[a-z])/.test(password),
-      number: /(?=.*[0-9])/.test(password),
-      symbol: /(?=.*[!£$%&@#])/.test(password),
-      length: password.length > 7 ? true : false,
+      uppercase: /(?=.*[A-Z])/.test(userData.password),
+      lowercase: /(?=.*[a-z])/.test(userData.password),
+      number: /(?=.*[0-9])/.test(userData.password),
+      symbol: /(?=.*[!£$%&@#])/.test(userData.password),
+      length: userData.password.length > 7 ? true : false,
     });
-  }, [password, confirmPassword]);
-
-  const handleChangeUsername = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setUsername(event.target.value);
-  };
-
-  const handleChangeEmail = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setEmail(event.target.value);
-  };
-
-  const handleChangeConfirmEmail = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setConfirmEmail(event.target.value);
-  };
-
-  const handleChangePassword = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setPassword(event.target.value);
-  };
-
-  const handleChangeConfirmPassword = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setConfirmPassword(event.target.value);
-  };
+  }, [
+    userData.email,
+    userData.confirmEmail,
+    userData.password,
+    userData.confirmPassword,
+  ]);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(userData.email)) {
       setEmailErrorMessage("Email format incorrect.");
       return;
     }
@@ -108,10 +98,21 @@ export default function Register() {
     }
 
     try {
-      const response = await RegisterUser(username, email, password);
+      const response = await RegisterUser(
+        userData.username,
+        userData.email,
+        userData.password
+      );
 
       if (response.success) {
         setStoreMessage({ message: response.message, color: "green" });
+        setUserData({
+          username: "",
+          email: "",
+          confirmEmail: "",
+          password: "",
+          confirmPassword: "",
+        });
       } else {
         setStoreMessage({ message: response.message, color: "red" });
       }
@@ -137,10 +138,19 @@ export default function Register() {
           <input
             type="text"
             placeholder="Username"
+            value={userData.username}
+            style={{ textTransform: "capitalize" }}
             minLength={4}
             maxLength={30}
             className="w-96 h-10 mt-8 p-2 rounded-md"
-            onChange={handleChangeUsername}
+            onChange={(event) =>
+              setUserData({
+                ...userData,
+                username:
+                  event.target.value.charAt(0).toUpperCase() +
+                  event.target.value.slice(1),
+              })
+            }
             required
           ></input>
           {emailErrorMessage ? (
@@ -153,19 +163,25 @@ export default function Register() {
           <input
             type="email"
             placeholder="Email"
+            value={userData.email}
             minLength={10}
             maxLength={30}
             className="w-96 h-10 mt-2 p-2 rounded-md"
-            onChange={handleChangeEmail}
+            onChange={(event) =>
+              setUserData({ ...userData, email: event.target.value })
+            }
             required
           ></input>
           <input
             type="email"
             placeholder="Confirm Email"
+            value={userData.confirmEmail}
             minLength={10}
             maxLength={30}
             className="w-96 h-10 mt-4 p-2 rounded-md"
-            onChange={handleChangeConfirmEmail}
+            onChange={(event) =>
+              setUserData({ ...userData, confirmEmail: event.target.value })
+            }
             required
           ></input>
           {passwordErrorMessage ? (
@@ -178,19 +194,25 @@ export default function Register() {
           <input
             type="password"
             placeholder="Password"
+            value={userData.password}
             minLength={8}
             maxLength={30}
             className="w-96 h-10 mt-2 p-2 rounded-md"
-            onChange={handleChangePassword}
+            onChange={(event) =>
+              setUserData({ ...userData, password: event.target.value })
+            }
             required
           ></input>
           <input
             type="password"
             placeholder="Confirm Password"
+            value={userData.confirmPassword}
             minLength={8}
             maxLength={30}
             className="w-96 h-10 mt-4 p-2 rounded-md"
-            onChange={handleChangeConfirmPassword}
+            onChange={(event) =>
+              setUserData({ ...userData, confirmPassword: event.target.value })
+            }
             required
           ></input>
           <div

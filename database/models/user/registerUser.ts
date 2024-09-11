@@ -3,7 +3,7 @@
 import newClient from "../../utils/newClient";
 import bcrypt from "bcrypt";
 
-export async function RegisterUser(
+export async function registerUser(
   username: string,
   email: string,
   password: string

@@ -1,6 +1,7 @@
 import NavBar from "../../components/customer/NavBar";
 import Footer from "../../components/customer/Footer";
-import { SearchProvider } from "../../components/customer/SearchContext";
+import { SearchProvider } from "../../context/SearchContext";
+import { UserProvider } from "../../context/UserContext";
 
 export default function CustomerPageLayout({
   children,
@@ -10,11 +11,13 @@ export default function CustomerPageLayout({
   return (
     <div>
       <SearchProvider>
-        <NavBar />
-        <div className="max-w-[1800px] flex flex-col m-auto mt-14">
-          {children}
-        </div>
-        <Footer />
+        <UserProvider>
+          <NavBar />
+          <div className="max-w-[1800px] flex flex-col m-auto mt-14">
+            {children}
+          </div>
+          <Footer />
+        </UserProvider>
       </SearchProvider>
     </div>
   );

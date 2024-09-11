@@ -7,7 +7,7 @@ import React, { useEffect, useState } from "react";
 import SearchProducts from "./SearchProducts";
 import { UpdatedProduct } from "../../types/databaseTypes";
 import { getAvailableProducts } from "../../database/models/product/getAvailableProducts";
-import { useSearch } from "./SearchContext";
+import { useSearch } from "../../context/SearchContext";
 
 export default function NavBar() {
   const pathname = usePathname();

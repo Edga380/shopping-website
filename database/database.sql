@@ -4,6 +4,9 @@ CREATE TABLE IF NOT EXISTS Users (
     username TEXT UNIQUE NOT NULL,
     password TEXT NOT NULL,
     email TEXT UNIQUE NOT NULL,
+    session_cookie_id TEXT UNIQUE,
+    auth_cookie_id TEXT UNIQUE,
+    auth_cookie_created_at TEXT,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -73,4 +76,15 @@ CREATE TABLE IF NOT EXISTS SlideshowImages (
   image_id INTEGER PRIMARY KEY AUTOINCREMENT,
   image_spot INTEGER,
   path TEXT NOT NULL
+);
+
+-- Create Contact us table to store contact us messages
+CREATE TABLE IF NOT EXISTS ContactUsSubmissions (
+  contact_form_id INTEGER PRIMARY KEY AUTOINCREMENT,
+  full_name TEXT NOT NULL,
+  email TEXT NOT NULL,
+  subject TEXT NOT NULL,
+  message TEXT NOT NULL,
+  replied TEXT NOT NULL,
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );

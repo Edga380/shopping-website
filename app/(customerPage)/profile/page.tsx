@@ -1,15 +1,16 @@
-import Link from "next/link";
+"use server";
 
-export default function Profile() {
-  const user = false;
+import Link from "next/link";
+import authUser from "../../../database/models/user/authUser";
+import DisplayUserProfile from "../../../components/customer/DisplayUserProfile";
+
+export default async function Profile() {
+  const user = await authUser();
 
   return (
     <div className="bg-color-pallet-02 my-4 rounded-2xl flex justify-center">
       {user ? (
-        <div className="flex">
-          <div>navigation</div>
-          <div>Information</div>
-        </div>
+        <DisplayUserProfile user={user} />
       ) : (
         <div className="flex-col">
           <div className="text-text-color-dark-green text-2xl text-center mt-4">

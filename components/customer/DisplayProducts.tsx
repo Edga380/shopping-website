@@ -7,7 +7,7 @@ import { DropDownMenuOption } from "../DropDownMenuOption";
 import { useEffect, useState, useMemo } from "react";
 import PriceSlider from "./PriceSlider";
 import AvailabilityFilter from "../productFilters/Availability";
-import { useSearch } from "./SearchContext";
+import { useSearch } from "../../context/SearchContext";
 
 type DisplayProductsProps = {
   products: UpdatedProduct[];

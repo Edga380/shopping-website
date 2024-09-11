@@ -2,9 +2,10 @@
 
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
-import { RegisterUser } from "../../../../database/models/user/register";
+import { registerUser } from "../../../../database/models/user/registerUser";
+import { useRouter } from "next/navigation";
 
-type userDataProps = {
+type userInputDataProps = {
   username: string;
   email: string;
   confirmEmail: string;
@@ -13,7 +14,8 @@ type userDataProps = {
 };
 
 export default function Register() {
-  const [userData, setUserData] = useState<userDataProps>({
+  const router = useRouter();
+  const [userInputData, setUserInputData] = useState<userInputDataProps>({
     username: "",
     email: "",
     confirmEmail: "",
@@ -62,33 +64,35 @@ export default function Register() {
 
   useEffect(() => {
     setEmailErrorMessage(
-      userData.email !== userData.confirmEmail && userData.confirmEmail
+      userInputData.email !== userInputData.confirmEmail &&
+        userInputData.confirmEmail
         ? "Emails do not match."
         : ""
     );
     setPasswordErrorMessage(
-      userData.password !== userData.confirmPassword && userData.confirmPassword
+      userInputData.password !== userInputData.confirmPassword &&
+        userInputData.confirmPassword
         ? "Passwords do not match"
         : ""
     );
 
     setPasswordDifficultyEntries({
-      uppercase: /(?=.*[A-Z])/.test(userData.password),
-      lowercase: /(?=.*[a-z])/.test(userData.password),
-      number: /(?=.*[0-9])/.test(userData.password),
-      symbol: /(?=.*[!£$%&@#])/.test(userData.password),
-      length: userData.password.length > 7 ? true : false,
+      uppercase: /(?=.*[A-Z])/.test(userInputData.password),
+      lowercase: /(?=.*[a-z])/.test(userInputData.password),
+      number: /(?=.*[0-9])/.test(userInputData.password),
+      symbol: /(?=.*[!£$%&@#])/.test(userInputData.password),
+      length: userInputData.password.length > 7 ? true : false,
     });
   }, [
-    userData.email,
-    userData.confirmEmail,
-    userData.password,
-    userData.confirmPassword,
+    userInputData.email,
+    userInputData.confirmEmail,
+    userInputData.password,
+    userInputData.confirmPassword,
   ]);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(userData.email)) {
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(userInputData.email)) {
       setEmailErrorMessage("Email format incorrect.");
       return;
     }
@@ -98,21 +102,22 @@ export default function Register() {
     }
 
     try {
-      const response = await RegisterUser(
-        userData.username,
-        userData.email,
-        userData.password
+      const response = await registerUser(
+        userInputData.username,
+        userInputData.email,
+        userInputData.password
       );
 
       if (response.success) {
         setStoreMessage({ message: response.message, color: "green" });
-        setUserData({
+        setUserInputData({
           username: "",
           email: "",
           confirmEmail: "",
           password: "",
           confirmPassword: "",
         });
+        router.push("/profile/login");
       } else {
         setStoreMessage({ message: response.message, color: "red" });
       }
@@ -138,17 +143,17 @@ export default function Register() {
           <input
             type="text"
             placeholder="Username"
-            value={userData.username}
+            value={userInputData.username}
             style={{ textTransform: "capitalize" }}
             minLength={4}
             maxLength={30}
             className="w-96 h-10 mt-8 p-2 rounded-md"
             onChange={(event) =>
-              setUserData({
-                ...userData,
+              setUserInputData({
+                ...userInputData,
                 username:
                   event.target.value.charAt(0).toUpperCase() +
-                  event.target.value.slice(1),
+                  event.target.value.slice(1).toLowerCase(),
               })
             }
             required
@@ -163,24 +168,27 @@ export default function Register() {
           <input
             type="email"
             placeholder="Email"
-            value={userData.email}
+            value={userInputData.email}
             minLength={10}
             maxLength={30}
             className="w-96 h-10 mt-2 p-2 rounded-md"
             onChange={(event) =>
-              setUserData({ ...userData, email: event.target.value })
+              setUserInputData({ ...userInputData, email: event.target.value })
             }
             required
           ></input>
           <input
             type="email"
             placeholder="Confirm Email"
-            value={userData.confirmEmail}
+            value={userInputData.confirmEmail}
             minLength={10}
             maxLength={30}
             className="w-96 h-10 mt-4 p-2 rounded-md"
             onChange={(event) =>
-              setUserData({ ...userData, confirmEmail: event.target.value })
+              setUserInputData({
+                ...userInputData,
+                confirmEmail: event.target.value,
+              })
             }
             required
           ></input>
@@ -194,24 +202,30 @@ export default function Register() {
           <input
             type="password"
             placeholder="Password"
-            value={userData.password}
+            value={userInputData.password}
             minLength={8}
             maxLength={30}
             className="w-96 h-10 mt-2 p-2 rounded-md"
             onChange={(event) =>
-              setUserData({ ...userData, password: event.target.value })
+              setUserInputData({
+                ...userInputData,
+                password: event.target.value,
+              })
             }
             required
           ></input>
           <input
             type="password"
             placeholder="Confirm Password"
-            value={userData.confirmPassword}
+            value={userInputData.confirmPassword}
             minLength={8}
             maxLength={30}
             className="w-96 h-10 mt-4 p-2 rounded-md"
             onChange={(event) =>
-              setUserData({ ...userData, confirmPassword: event.target.value })
+              setUserInputData({
+                ...userInputData,
+                confirmPassword: event.target.value,
+              })
             }
             required
           ></input>

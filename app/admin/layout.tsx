@@ -13,6 +13,9 @@ export default function AdminLayout({
         <AdminNavLink href="/admin/users">Customers</AdminNavLink>
         <AdminNavLink href="/admin/orders">Sales</AdminNavLink>
         <AdminNavLink href="/admin/slideshow">Slideshow</AdminNavLink>
+        <AdminNavLink href="/admin/contactUsSubmissions">
+          ContactUsSubmissions
+        </AdminNavLink>
       </AdminNav>
       <div className="w-4/5">{children}</div>
     </div>

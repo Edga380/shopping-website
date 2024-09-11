@@ -1,3 +1,14 @@
+export type UserData = {
+  user_id: number;
+  username: string;
+  password: string;
+  email: string;
+  session_cookie_id: string;
+  auth_cookie_id: string;
+  auth_cookie_created_at: string;
+  created_at: string;
+};
+
 export type AddProduct = {
   name: string;
   description: string;
@@ -78,4 +89,14 @@ export type SlideShowImages = {
   image_id: number;
   image_spot: number;
   path: string;
+};
+
+export type ContactUsSubmissions = {
+  contact_form_id: string;
+  full_name: string;
+  email: string;
+  subject: string;
+  message: string;
+  replied: string;
+  created_at: string;
 };

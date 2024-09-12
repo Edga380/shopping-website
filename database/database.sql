@@ -7,6 +7,8 @@ CREATE TABLE IF NOT EXISTS Users (
     session_cookie_id TEXT UNIQUE,
     auth_cookie_id TEXT UNIQUE,
     auth_cookie_created_at TEXT,
+    resetPasswordToken TEXT,
+    resetPasswordExpires TEXT,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 

@@ -6,6 +6,8 @@ export type UserData = {
   session_cookie_id: string;
   auth_cookie_id: string;
   auth_cookie_created_at: string;
+  resetPasswordToken: string;
+  resetPasswordExpires: string;
   created_at: string;
 };
 

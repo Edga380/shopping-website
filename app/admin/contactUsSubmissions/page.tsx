@@ -1,4 +1,4 @@
-import DisplayContactUsSubmissions from "../../../components/customer/contact/DisplayContactUsSubmissions";
+import DisplayContactUsSubmissions from "../../../components/admin/contact/DisplayContactUsSubmissions";
 import getSubmissions from "../../../database/models/contact/getSubmissions";
 
 export default async function ContactUsSubmissions() {

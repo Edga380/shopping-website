@@ -15,6 +15,24 @@ export default async function loginUser(userInputData: userInputDataProps) {
   const database = newClient();
 
   try {
+    const result = database
+      .prepare(
+        `
+      SELECT email
+      FROM Users
+      WHERE email = ?
+      `
+      )
+      .get(userInputData.email) as UserData | undefined;
+
+    if (!result) {
+      return {
+        success: false,
+        data: null,
+        message: "Email or password incorrect.",
+      };
+    }
+
     const { password, ...userData } = database
       .prepare(
         `
@@ -23,7 +41,7 @@ export default async function loginUser(userInputData: userInputDataProps) {
         WHERE email = ?
         `
       )
-      .get(userInputData.email) as UserData;
+      .get(result.email) as UserData;
 
     if (!userData) {
       return {

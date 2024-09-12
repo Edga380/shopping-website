@@ -15,6 +15,7 @@
     "dotenv": "^16.4.5",
     "framer-motion": "^11.2.10",
     "next": "14.1.4",
+    "nodemailer": "^6.9.15",
     "react": "^18",
     "react-dom": "^18"
   },
@@ -23,6 +24,7 @@
     "@types/bcrypt": "^5.0.2",
     "@types/better-sqlite3": "^7.6.9",
     "@types/node": "^20",
+    "@types/nodemailer": "^6.4.15",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "autoprefixer": "^10.0.1",

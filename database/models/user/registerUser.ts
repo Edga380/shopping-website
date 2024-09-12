@@ -1,7 +1,7 @@
 "use server";
 
 import newClient from "../../utils/newClient";
-import bcrypt from "bcrypt";
+import { hash } from "bcrypt";
 
 export async function registerUser(
   username: string,
@@ -10,7 +10,7 @@ export async function registerUser(
 ) {
   const database = newClient();
 
-  const hashedPassword = await bcrypt.hash(password, 10);
+  const hashedPassword = await hash(password, 10);
 
   try {
     database

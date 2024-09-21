@@ -90,3 +90,27 @@ CREATE TABLE IF NOT EXISTS ContactUsSubmissions (
   replied TEXT NOT NULL,
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
+
+-- NewsLetter Subscription emails table if not exists
+CREATE TABLE IF NOT EXISTS NewsLetterSubscriptionEmails (
+    news_letter_subscription_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    news_letter_subscription_email TEXT UNIQUE,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+-- NewsLetters table if not exists
+CREATE TABLE IF NOT EXISTS NewsLetters (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    subject TEXT,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+-- NewsLetterSections table if not exists
+CREATE TABLE IF NOT EXISTS NewsLetterSections (
+    news_letter_id INTEGER,
+    image_url TEXT,
+    title TEXT,
+    message TEXT,
+    button_link TEXT,
+    button_name TEXT
+);

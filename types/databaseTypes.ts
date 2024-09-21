@@ -102,3 +102,17 @@ export type ContactUsSubmissions = {
   replied: string;
   created_at: string;
 };
+
+export type NewsLetterEmailsData = {
+  news_letter_subscription_id: number;
+  news_letter_subscription_email: string;
+  created_at: string;
+};
+
+export type NewsLetterSection = {
+  title: string;
+  imageUrl: string;
+  message: string;
+  buttonLink: string;
+  buttonName: string;
+};

@@ -16,6 +16,7 @@ export default function AdminLayout({
         <AdminNavLink href="/admin/contactUsSubmissions">
           ContactUsSubmissions
         </AdminNavLink>
+        <AdminNavLink href="/admin/newsLetter">NewsLetter</AdminNavLink>
       </AdminNav>
       <div className="w-4/5">{children}</div>
     </div>

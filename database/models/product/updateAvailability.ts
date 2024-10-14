@@ -13,10 +13,10 @@ export default async function updateAvailability(
     database
       .prepare(
         `
-            UPDATE Products
-            SET isAvailable = ?
-            WHERE product_id = ?
-            `
+        UPDATE Product
+        SET is_available = ?
+        WHERE product_id = ?
+        `
       )
       .run(changeIsAvailableValue, productId);
   } catch (error) {

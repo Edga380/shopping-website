@@ -1,86 +1,102 @@
--- Create Users table if not exists with unique username constraint
+-- Users table
 CREATE TABLE IF NOT EXISTS Users (
-    user_id INTEGER PRIMARY KEY AUTOINCREMENT,
-    username TEXT UNIQUE NOT NULL,
-    password TEXT NOT NULL,
-    email TEXT UNIQUE NOT NULL,
-    session_cookie_id TEXT UNIQUE,
-    auth_cookie_id TEXT UNIQUE,
-    auth_cookie_created_at TEXT,
-    resetPasswordToken TEXT,
-    resetPasswordExpires TEXT,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+  user_id INTEGER PRIMARY KEY AUTOINCREMENT,
+  username TEXT UNIQUE NOT NULL,
+  password TEXT NOT NULL,
+  email TEXT UNIQUE NOT NULL,
+  session_cookie_id TEXT UNIQUE,
+  auth_cookie_id TEXT UNIQUE,
+  auth_cookie_created_at TEXT,
+  resetPasswordToken TEXT,
+  resetPasswordExpires TEXT,
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
--- Create Cart table if not exists
+-- Cart table
 CREATE TABLE IF NOT EXISTS Cart (
-    cart_id INTEGER PRIMARY KEY AUTOINCREMENT,
-    cart_user_id INTEGER,
-    product_id TEXT,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (cart_user_id) REFERENCES Users(user_id)
+  cart_id INTEGER PRIMARY KEY AUTOINCREMENT,
+  cart_user_id INTEGER,
+  product_id TEXT,
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (cart_user_id) REFERENCES Users(user_id)
 );
 
--- Create Produtcs table if not exists with unique Product constraint
-CREATE TABLE IF NOT EXISTS Products (
+-- Product table
+CREATE TABLE IF NOT EXISTS Product (
   product_id INTEGER PRIMARY KEY AUTOINCREMENT,
   name TEXT UNIQUE NOT NULL,
   description TEXT NOT NULL,
   category TEXT NOT NULL,
-  priceInPennies INTEGER NOT NULL,
-  stock INTEGER NOT NULL,
-  sold INTEGER,
+  base_price_in_pennies INTEGER NOT NULL,
   gender TEXT NOT NULL,
-  isAvailable TEXT NOT NULL,
+  is_available TEXT NOT NULL,
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
--- Create Product size table to store product size associated with Product sizes
-CREATE TABLE IF NOT EXISTS ProductSize (
-  productSize_id INTEGER PRIMARY KEY AUTOINCREMENT,
-  size TEXT NOT NULL
-);
-
--- Create Product sizes table to store product size associated with products
-CREATE TABLE IF NOT EXISTS ProductSizes (
-  product_id INTEGER,
-  size_id INTEGER,
-  FOREIGN KEY (product_id) REFERENCES Products (product_id),
-  FOREIGN KEY (size_id) REFERENCES ProductSize (productSize_id),
-  PRIMARY KEY (product_id, size_id)
-);
-
--- Create Product color table to store product color associated with Product colors
-CREATE TABLE IF NOT EXISTS ProductColor (
-  productColor_id INTEGER PRIMARY KEY AUTOINCREMENT,
-  color TEXT NOT NULL
-);
-
--- Create Product colors table to store product color associated with products
-CREATE TABLE IF NOT EXISTS ProductColors (
+-- Product variation
+CREATE TABLE IF NOT EXISTS ProductVariation (
+  product_variation_id INTEGER PRIMARY KEY AUTOINCREMENT,
   product_id INTEGER,
   color_id INTEGER,
-  FOREIGN KEY (product_id) REFERENCES Products (product_id),
-  FOREIGN KEY (color_id) REFERENCES ProductColor (productColor_id),
-  PRIMARY KEY (product_id, color_id)
+  FOREIGN KEY (product_id) REFERENCES Product (product_id) ON DELETE CASCADE,
+  FOREIGN KEY (color_id) REFERENCES ProductColor (product_color_id)
 );
 
--- Create Images table to store image paths associated with products
+-- Product size and stock
+CREATE TABLE IF NOT EXISTS ProductVariationSizeInventory (
+  product_variation_id INTEGER,
+  size_id INTEGER,
+  stock INTEGER,
+  sold INTEGER,
+  discount INTEGER,
+  FOREIGN KEY (product_variation_id) REFERENCES ProductVariation (product_variation_id) ON DELETE CASCADE,
+  FOREIGN KEY (size_id) REFERENCES ProductSize (product_size_id),
+  UNIQUE (product_variation_id, size_id)
+);
+
+CREATE UNIQUE INDEX IF NOT EXISTS unique_variation_size
+ON ProductVariationSizeInventory (product_variation_id, size_id);
+
+-- Product images
 CREATE TABLE IF NOT EXISTS ProductImages (
-  image_id INTEGER PRIMARY KEY AUTOINCREMENT,
-  product_id INTEGER,
-  path TEXT NOT NULL,
-  FOREIGN KEY (product_id) REFERENCES Products(product_id)
+  product_variation_id INTEGER,
+  path TEXT,
+  FOREIGN KEY (product_variation_id) REFERENCES ProductVariation (product_variation_id) ON DELETE CASCADE
 );
 
--- Create Slideshow Images table to store image paths
+-- Product category
+CREATE TABLE IF NOT EXISTS ProductCategory (
+  product_category_id INTEGER PRIMARY KEY AUTOINCREMENT,
+  category TEXT NOT NULL UNIQUE
+);
+
+-- Product category
+CREATE TABLE IF NOT EXISTS ProductCategorySize (
+  category_id INTEGER,
+  size_id INTEGER,
+  FOREIGN KEY (category_id) REFERENCES ProductCategory (product_category_id) ON DELETE CASCADE
+);
+
+-- Product size
+CREATE TABLE IF NOT EXISTS ProductSize (
+  product_size_id INTEGER PRIMARY KEY AUTOINCREMENT,
+  size TEXT NOT NULL UNIQUE
+);
+
+-- Product color
+CREATE TABLE IF NOT EXISTS ProductColor (
+  product_color_id INTEGER PRIMARY KEY AUTOINCREMENT,
+  color TEXT NOT NULL UNIQUE
+);
+
+-- Slideshow Images table
 CREATE TABLE IF NOT EXISTS SlideshowImages (
   image_id INTEGER PRIMARY KEY AUTOINCREMENT,
   image_spot INTEGER,
   path TEXT NOT NULL
 );
 
--- Create Contact us table to store contact us messages
+-- Contact us table
 CREATE TABLE IF NOT EXISTS ContactUsSubmissions (
   contact_form_id INTEGER PRIMARY KEY AUTOINCREMENT,
   full_name TEXT NOT NULL,
@@ -91,26 +107,26 @@ CREATE TABLE IF NOT EXISTS ContactUsSubmissions (
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
--- NewsLetter Subscription emails table if not exists
+-- Subscription emails table
 CREATE TABLE IF NOT EXISTS NewsLetterSubscriptionEmails (
-    news_letter_subscription_id INTEGER PRIMARY KEY AUTOINCREMENT,
-    news_letter_subscription_email TEXT UNIQUE,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+  news_letter_subscription_id INTEGER PRIMARY KEY AUTOINCREMENT,
+  news_letter_subscription_email TEXT UNIQUE,
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
--- NewsLetters table if not exists
+-- NewsLetters table
 CREATE TABLE IF NOT EXISTS NewsLetters (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    subject TEXT,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  subject TEXT,
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
--- NewsLetterSections table if not exists
+-- NewsLetterSections table
 CREATE TABLE IF NOT EXISTS NewsLetterSections (
-    news_letter_id INTEGER,
-    image_url TEXT,
-    title TEXT,
-    message TEXT,
-    button_link TEXT,
-    button_name TEXT
+  news_letter_id INTEGER,
+  image_url TEXT,
+  title TEXT,
+  message TEXT,
+  button_link TEXT,
+  button_name TEXT
 );

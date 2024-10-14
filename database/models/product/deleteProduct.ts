@@ -9,58 +9,23 @@ export default async function deleteProduct(
 ) {
   const database = newClient();
 
-  database.exec("BEGIN TRANSACTION");
-
   try {
     database
       .prepare(
         `
-            DELETE 
-            FROM ProductSizes
-            WHERE product_id = ?
-            `
-      )
-      .run(productId);
-
-    database
-      .prepare(
+        DELETE 
+        FROM Product
+        WHERE product_id = ?
         `
-            DELETE 
-            FROM ProductColors
-            WHERE product_id = ?
-            `
       )
       .run(productId);
-
-    database
-      .prepare(
-        `
-            DELETE 
-            FROM ProductImages
-            WHERE product_id = ?
-            `
-      )
-      .run(productId);
-
-    database
-      .prepare(
-        `
-              DELETE 
-              FROM Products
-              WHERE product_id = ?
-              `
-      )
-      .run(productId);
-
-    database.exec("COMMIT");
 
     await Promise.all(
       imagesPath.map(async (imagePath) => {
-        await fs.unlink(`public/products/${imagePath}`);
+        await fs.unlink(`public${imagePath}`);
       })
     );
   } catch (error) {
-    database.exec("ROLLBACK");
     console.error(error);
     throw error;
   }

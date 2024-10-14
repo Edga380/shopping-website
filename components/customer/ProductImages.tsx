@@ -14,9 +14,8 @@ export default function ProductImages({ images }: { images: string[] }) {
     <div className="flex">
       <div className="flex flex-wrap w-1/4 mb-auto">
         {images.map((image, index) => (
-          <button onClick={() => handleSelectedImage(image)}>
+          <button key={index} onClick={() => handleSelectedImage(image)}>
             <Image
-              key={index}
               src={`/products/${image}`}
               width={100}
               height={100}

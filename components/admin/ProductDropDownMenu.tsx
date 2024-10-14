@@ -70,9 +70,12 @@ export default function ProductDropdownMenu({
         </div>
         {isActive && (
           <div className="absolute w-36 bg-color-pallet-03 text-lg font-bold text-text-color-dark-green my-1 rounded self-center grid grid-cols-1">
-            <button className="text-lg font-bold text-text-color-dark-green rounded hover:bg-color-pallet-04 self-center px-6">
-              <Link href={`/admin/products/${productId}/edit`}>Edit</Link>
-            </button>
+            <Link
+              href={`/admin/products/${productId}/edit`}
+              className="text-lg text-center font-bold text-text-color-dark-green rounded hover:bg-color-pallet-04 self-center px-6"
+            >
+              Edit
+            </Link>
             <button
               className="text-lg font-bold text-text-color-dark-green rounded hover:bg-color-pallet-04 self-center px-6"
               onClick={handleUpdateAvailability}
@@ -97,7 +100,7 @@ export default function ProductDropdownMenu({
             <div className="font-semibold text-lg text-center">
               Are you sure you want to delete:
             </div>
-            <div className="font-bold text-xl text-center">"{productName}"</div>
+            <div className="font-bold text-xl text-center">{productName}</div>
             <div className="pt-6 flex justify-center space-x-4">
               <button
                 className="text-lg font-bold text-white rounded bg-red-500 hover:bg-red-700 px-6"

@@ -2,22 +2,25 @@
 
 import Image from "next/image";
 import { useState } from "react";
+import { SlideShowImages } from "../../types/databaseTypes";
 
-export default function SlideShow({ slideShowImages }: any) {
-  const [storedSlideshowImages, setStoredSlideshowImages] =
-    useState(slideShowImages);
+export default function SlideShow({
+  slideShowImages,
+}: {
+  slideShowImages: SlideShowImages[];
+}) {
   const [currentSlide, setCurrentSlide] = useState<number>(0);
 
   const prevBtn = () => {
     if (0 === currentSlide) {
-      setCurrentSlide(storedSlideshowImages.length - 1);
+      setCurrentSlide(slideShowImages.length - 1);
     } else {
       setCurrentSlide(currentSlide - 1);
     }
   };
 
   const nextBtn = () => {
-    if (storedSlideshowImages.length - 1 === currentSlide) {
+    if (slideShowImages.length - 1 === currentSlide) {
       setCurrentSlide(0);
     } else {
       setCurrentSlide(currentSlide + 1);
@@ -53,7 +56,7 @@ export default function SlideShow({ slideShowImages }: any) {
       </div>
       <div className="absolute bottom-0 left-0 w-full flex justify-center mb-4 z-10">
         <div className="align-middle flex border-color-pallet-01 border-2 p-1 rounded-lg">
-          {storedSlideshowImages.map((_: any, index: number) => (
+          {slideShowImages.map((_, index) => (
             <button
               key={index}
               className={`w-4 h-4 mx-1 rounded-full transition-transform duration-300 transform hover:scale-110 ${
@@ -67,13 +70,23 @@ export default function SlideShow({ slideShowImages }: any) {
         </div>
       </div>
       <button className="w-full h-full">
-        <Image
-          src={`/slideShow/${storedSlideshowImages[currentSlide].path}`}
-          height={200}
-          width={200}
-          className="w-full h-full"
-          alt="Alt"
-        ></Image>
+        {slideShowImages.length === 0 ? (
+          <Image
+            src={`/notFoundImages/slideshow_not_found.svg`}
+            height={200}
+            width={200}
+            className="w-full h-full object-cover"
+            alt="Slide show image not found."
+          ></Image>
+        ) : (
+          <Image
+            src={`/slideShow/${slideShowImages[currentSlide].path}`}
+            height={200}
+            width={200}
+            className="w-full h-full object-cover"
+            alt={`${slideShowImages[currentSlide].path}`}
+          ></Image>
+        )}
       </button>
     </div>
   );

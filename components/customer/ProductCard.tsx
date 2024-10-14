@@ -23,9 +23,13 @@ export default function ProductCard({ product }: ProductCardProps) {
       <Link href={`/products/${product.product_id}/product`}>
         <div className="product-card h-[18vw] relative">
           <Image
-            src={`/products/${product.images[0]}`}
-            height={400}
-            width={700}
+            src={
+              product.images.length === 0
+                ? `/notFoundImages/product_not_found.svg`
+                : `/products/${product.images[0]}`
+            }
+            height={700}
+            width={400}
             alt={product.name}
             className="transition-transform duration-300 transform hover:scale-110"
           />

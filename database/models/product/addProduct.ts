@@ -4,204 +4,229 @@ import newClient from "../../utils/newClient";
 import fs from "fs/promises";
 import { join, dirname } from "path";
 
-type ProductSizeId = {
-  productSize_id: number;
+type inventoryData = {
+  size: string;
+  stock: string;
+  sold: string;
+  discount: string;
 };
 
-type ProductColorId = {
-  productColor_id: number;
+type groupedSizesInventoryByColor = {
+  color: string;
+  inventoryData: inventoryData[];
 };
 
-export async function addProduct(productFormData: FormData) {
+type parseSelectedInventoryData = {
+  color: string;
+  size: string;
+  stock: string;
+  sold: string;
+  discount: string;
+};
+
+type groupedFilesByColor = {
+  file: File;
+  color: string;
+};
+
+export default async function addProduct(productFormData: FormData) {
   const database = newClient();
 
-  const transaction = database.transaction(async () => {
-    try {
-      const name = productFormData.get("name") as string;
-      const description = productFormData.get("description") as string;
-      const category = productFormData.get("category") as string;
-      const priceInPennies = parseInt(
-        productFormData.get("priceInPennies") as string
-      );
-      const stock = parseInt(productFormData.get("stock") as string);
-      const sold = parseInt(productFormData.get("sold") as string);
-      const gender = productFormData.get("gender") as string;
-      const colorsCount = parseInt(
-        productFormData.get("colorsCount") as string
-      );
-      const sizesCount = parseInt(productFormData.get("sizesCount") as string);
-      const newImagesCount = productFormData.get("newImagesCount") as string;
-      const available = productFormData.get("available") as string;
+  const productFormDataEntries = Object.fromEntries(productFormData.entries());
 
-      const colors: string[] = [];
+  const {
+    name,
+    description,
+    category,
+    basePriceInPennies,
+    gender,
+    selectedInventoryData,
+    isAvailable,
+  } = productFormDataEntries;
 
-      for (let i = 0; i < colorsCount; i++) {
-        const currentColors = productFormData.getAll(`color_${i}`) as string[];
-        colors.push(...currentColors);
-      }
+  const parseInventoryData = JSON.parse(selectedInventoryData as string);
 
-      const sizes: string[] = [];
+  const groupedInventoryDataByColor: groupedSizesInventoryByColor[] =
+    parseInventoryData.reduce(
+      (
+        acc: groupedSizesInventoryByColor[],
+        parseSelectedSizeStock: parseSelectedInventoryData
+      ) => {
+        let existingColor = acc.find(
+          (colorObject) => colorObject.color === parseSelectedSizeStock.color
+        );
 
-      for (let i = 0; i < sizesCount; i++) {
-        const currentSizes = productFormData.getAll(`size_${i}`) as string[];
-        sizes.push(...currentSizes);
-      }
-
-      const newImages: File[] = [];
-
-      const parseNewImagesCount = parseInt(newImagesCount);
-
-      for (let i = 0; i < parseNewImagesCount; i++) {
-        const newImage = productFormData.getAll(`new_image_${i}`) as File[];
-        newImages.push(...newImage);
-      }
-
-      if (newImages.length < 1 || colors.length < 1 || sizes.length < 1) {
-        return `Choose atleast one: ${newImages.length < 1 ? "(Image)" : ""} ${
-          colors.length < 1 ? "(Color)" : ""
-        } ${sizes.length < 1 ? "(Size)" : ""}`;
-      }
-
-      const product = {
-        name: name,
-        description: description,
-        category: category,
-        priceInPennies: priceInPennies,
-        stock: stock,
-        sold: sold,
-        gender: gender,
-        colors: colors,
-        sizes: sizes,
-        isAvailable: available,
-        images: newImages,
-      };
-
-      for (const size of product.sizes) {
-        const existingSize = database
-          .prepare(
-            `
-            SELECT productSize_id 
-            FROM ProductSize 
-            WHERE size = ?
-            `
-          )
-          .get(size);
-        if (!existingSize) {
-          database
-            .prepare(
-              `
-              INSERT 
-              INTO ProductSize (size) 
-              VALUES (?)
-              `
-            )
-            .run(size);
+        if (existingColor) {
+          existingColor.inventoryData.push({
+            size: parseSelectedSizeStock.size,
+            stock: parseSelectedSizeStock.stock,
+            sold: parseSelectedSizeStock.sold,
+            discount: parseSelectedSizeStock.discount,
+          });
+        } else {
+          acc.push({
+            color: parseSelectedSizeStock.color,
+            inventoryData: [
+              {
+                size: parseSelectedSizeStock.size,
+                stock: parseSelectedSizeStock.stock,
+                sold: parseSelectedSizeStock.sold,
+                discount: parseSelectedSizeStock.discount,
+              },
+            ],
+          });
         }
-      }
 
-      for (const color of product.colors) {
-        const existingColor = database
-          .prepare(
-            `
-            SELECT productColor_id 
-            FROM ProductColor 
-            WHERE color = ?
-            `
-          )
-          .get(color);
-        if (!existingColor) {
-          database
-            .prepare(
-              `
-              INSERT 
-              INTO ProductColor (color) 
-              VALUES (?)
-              `
-            )
-            .run(color);
-        }
+        return acc;
+      },
+      [] as groupedSizesInventoryByColor[]
+    );
+
+  const groupedFilesByColor: groupedFilesByColor[] = [];
+
+  for (const [key, value] of Object.entries(productFormDataEntries)) {
+    if (key.startsWith("selectedImageFile_")) {
+      const fileIndex = key.split("_")[1];
+      const colorKey = `selectedImageColor_${fileIndex}`;
+
+      if (productFormDataEntries[colorKey]) {
+        const file = value as File;
+        const color = productFormDataEntries[colorKey] as string;
+
+        groupedFilesByColor.push({ file, color });
       }
-      const info = database
-        .prepare(
+    }
+  }
+
+  const insertProduct = database.transaction(() => {
+    const productResult = database
+      .prepare(
+        `
+          INSERT
+          INTO Product
+            (name, description, category, base_price_in_pennies, gender, is_available)
+          VALUES
+            (?, ?, ?, ?, ?, ?)
           `
-            INSERT 
-            INTO Products 
-              (name, description, category, priceInPennies, stock, sold, gender, isAvailable) 
-            VALUES 
-              (@name, @description, @category, @priceInPennies, @stock, @sold, @gender, @isAvailable)
-            `
-        )
-        .run(product);
-      const productId = info.lastInsertRowid;
+      )
+      .run(
+        name,
+        description,
+        category,
+        basePriceInPennies,
+        gender,
+        isAvailable
+      );
 
-      for (const image of product.images) {
-        database
-          .prepare(
-            `
-              INSERT 
-              INTO ProductImages (product_id, path) 
+    return productResult.lastInsertRowid;
+  });
+
+  const insertImages = database.transaction(
+    (
+      groupedFilesByColor: groupedFilesByColor[],
+      productVariationId,
+      productVariationcolor
+    ) => {
+      groupedFilesByColor.forEach(({ color, file }) => {
+        if (color === productVariationcolor) {
+          const imagePath = `/products/${file.name}`;
+
+          database
+            .prepare(
+              `
+              INSERT
+              INTO ProductImages
+                (product_variation_id, path)
               VALUES (?, ?)
               `
-          )
-          .run(productId, image.name);
-      }
+            )
+            .run(productVariationId, imagePath);
+        }
+      });
+    }
+  );
 
-      for (const size of product.sizes) {
-        const { productSize_id } = database
-          .prepare(
-            `
-              SELECT productSize_id 
-              FROM ProductSize 
-              WHERE size = ?
-              `
-          )
-          .get(size) as ProductSizeId;
-        database
-          .prepare(
-            `
-              INSERT 
-              INTO ProductSizes (product_id, size_id) 
-              VALUES (?, ?)
-              `
-          )
-          .run(productId, productSize_id);
-      }
+  const selectColorInsertVariation = database.transaction(
+    (groupedInventoryDataByColor) => {
+      const productId = insertProduct();
 
-      for (const color of product.colors) {
-        const { productColor_id } = database
-          .prepare(
-            `
-              SELECT productColor_id 
-              FROM ProductColor 
+      groupedInventoryDataByColor.forEach(
+        ({ color, inventoryData }: groupedSizesInventoryByColor) => {
+          const { product_color_id } = database
+            .prepare(
+              `
+              SELECT product_color_id
+              FROM ProductColor
               WHERE color = ?
               `
-          )
-          .get(color) as ProductColorId;
-        database
-          .prepare(
-            `
-              INSERT 
-              INTO ProductColors (product_id, color_id) 
-              VALUES (?, ?)
+            )
+            .get(color) as { product_color_id: number };
+          const productVariationId = database
+            .prepare(
               `
-          )
-          .run(productId, productColor_id);
-      }
+              INSERT
+              INTO ProductVariation 
+                (product_id, color_id)
+              VALUES 
+                (?, ?)
+              `
+            )
+            .run(productId, product_color_id);
 
-      if (product.images.length > 0) {
-        await Promise.all(
-          product.images.map(async (image) => {
-            const imageBuffer = await image.arrayBuffer();
-            const filePath = join("public", "products", image.name);
-            await fs.mkdir(dirname(filePath), { recursive: true });
-            await fs.writeFile(filePath, Buffer.from(imageBuffer));
-          })
-        );
-      }
-    } catch (error) {
-      console.error("Error adding product: ", error);
-      throw error;
+          insertImages(
+            groupedFilesByColor,
+            productVariationId.lastInsertRowid,
+            color
+          );
+
+          inventoryData.forEach(({ size, stock, sold, discount }) => {
+            const { product_size_id } = database
+              .prepare(
+                `
+                SELECT product_size_id
+                FROM ProductSize
+                WHERE size = ?
+                `
+              )
+              .get(size) as { product_size_id: string };
+            database
+              .prepare(
+                `
+                INSERT
+                INTO ProductVariationSizeInventory 
+                  (product_variation_id, size_id, stock, sold, discount)
+                VALUES 
+                  (?, ?, ?, ?, ?)
+                `
+              )
+              .run(
+                productVariationId.lastInsertRowid,
+                product_size_id,
+                stock,
+                sold,
+                discount
+              );
+          });
+        }
+      );
     }
-  });
-  return transaction();
+  );
+
+  try {
+    selectColorInsertVariation(groupedInventoryDataByColor);
+
+    if (groupedFilesByColor.length > 0) {
+      await Promise.all(
+        groupedFilesByColor.map(async ({ file }) => {
+          const imageBuffer = await file.arrayBuffer();
+          const filePath = join("public", "products", file.name);
+          await fs.mkdir(dirname(filePath), { recursive: true });
+          await fs.writeFile(filePath, Buffer.from(imageBuffer));
+        })
+      );
+    }
+  } catch (error) {
+    console.error("Error adding product: ", error);
+    throw error;
+  }
 }

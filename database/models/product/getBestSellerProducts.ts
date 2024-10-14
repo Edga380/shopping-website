@@ -28,7 +28,10 @@ export async function getBestSellerProducts(): Promise<
       .all("true") as NewestBestSellerProduct[];
 
     return products.map((productData) => {
-      return { ...productData, images: productData.images.split(",") };
+      return {
+        ...productData,
+        images: productData.images ? productData.images.split(",") : [],
+      };
     });
   } catch (error) {
     console.error(`Error getting products:`, error);

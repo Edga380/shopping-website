@@ -1,4 +1,8 @@
-import { AdminNav, AdminNavLink } from "../../components/admin/AdminNav";
+import {
+  AdminNav,
+  AdminNavLink,
+  AdminNavSubLink,
+} from "../../components/admin/AdminNav";
 
 export default function AdminLayout({
   children,
@@ -6,19 +10,34 @@ export default function AdminLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className="flex flex-col items-center">
+    <div className="grid grid-cols-[300px_1fr]">
       <AdminNav>
-        <AdminNavLink href="/admin">Dashboard</AdminNavLink>
-        <AdminNavLink href="/admin/products">Products</AdminNavLink>
-        <AdminNavLink href="/admin/users">Customers</AdminNavLink>
-        <AdminNavLink href="/admin/orders">Sales</AdminNavLink>
-        <AdminNavLink href="/admin/slideshow">Slideshow</AdminNavLink>
-        <AdminNavLink href="/admin/contactUsSubmissions">
-          ContactUsSubmissions
+        <AdminNavLink name="Dashboard" href="/admin"></AdminNavLink>
+        <AdminNavLink name="Products" href="/admin/products">
+          <AdminNavSubLink href="/admin/products/addProduct">
+            Add product
+          </AdminNavSubLink>
+          <AdminNavSubLink href="/admin/products/addCategory">
+            Categories
+          </AdminNavSubLink>
+          <AdminNavSubLink href="/admin/products/addColor">
+            Colors
+          </AdminNavSubLink>
+          <AdminNavSubLink href="/admin/products/addSize">
+            Sizes
+          </AdminNavSubLink>
         </AdminNavLink>
-        <AdminNavLink href="/admin/newsLetter">NewsLetter</AdminNavLink>
+        <AdminNavLink name="Customers" href="/admin/users"></AdminNavLink>
+        <AdminNavLink name="Sales" href="/admin/orders"></AdminNavLink>
+        <AdminNavLink name="Slideshow" href="/admin/slideshow"></AdminNavLink>
+        <AdminNavLink
+          name="ContactUsSubmissions"
+          href="/admin/contactUsSubmissions"
+        ></AdminNavLink>
+        <AdminNavLink name="NewsLetter" href="/admin/newsLetter"></AdminNavLink>
       </AdminNav>
-      <div className="w-4/5">{children}</div>
+      <div></div>
+      <div>{children}</div>
     </div>
   );
 }

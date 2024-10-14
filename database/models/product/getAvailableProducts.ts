@@ -28,9 +28,9 @@ export async function getAvailableProducts(): Promise<UpdatedProduct[]> {
     return products.map((product) => {
       return {
         ...product,
-        colors: product.colors.split(","),
-        sizes: product.sizes.split(","),
-        images: product.images.split(","),
+        colors: product.colors ? product.colors.split(",") : [],
+        sizes: product.sizes ? product.sizes.split(",") : [],
+        images: product.images ? product.images.split(",") : [],
       };
     });
   } catch (error) {

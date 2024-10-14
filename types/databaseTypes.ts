@@ -11,34 +11,16 @@ export type UserData = {
   created_at: string;
 };
 
-export type AddProduct = {
-  name: string;
-  description: string;
-  category: string;
-  priceInPennies: number;
-  stock: number;
-  sold: number;
-  gender: string;
-  colors: string[];
-  sizes: string[];
-  isAvailable: string;
-  images: File[];
-};
-
 export type OriginalProduct = {
   product_id: number;
   name: string;
   description: string;
   category: string;
-  priceInPennies: number;
-  stock: number;
-  sold: number;
+  base_price_in_pennies: number;
   gender: string;
-  isAvailable: string;
+  is_available: string;
   created_at: string;
-  sizes: string;
-  colors: string;
-  images: string;
+  product_variations: string;
 };
 
 export type UpdatedProduct = {
@@ -46,15 +28,24 @@ export type UpdatedProduct = {
   name: string;
   description: string;
   category: string;
-  priceInPennies: number;
-  stock: number;
-  sold: number;
+  base_price_in_pennies: number;
   gender: string;
-  isAvailable: string;
+  is_available: string;
   created_at: string;
-  colors: string[];
-  sizes: string[];
-  images: string[];
+  product_variations: [
+    {
+      color: string;
+      product_size_inventory: [
+        {
+          size: string;
+          stock: string;
+          sold: string;
+          discount: string;
+        }
+      ];
+      images: string[];
+    }
+  ];
 };
 
 export type UpdateProduct = {
@@ -115,4 +106,20 @@ export type NewsLetterSection = {
   message: string;
   buttonLink: string;
   buttonName: string;
+};
+
+export type getProductCategories = {
+  product_category_id: number;
+  category: string;
+};
+
+export type getProductColors = {
+  product_color_id: number;
+  color: string;
+};
+
+export type getProductSizes = {
+  product_size_id: number;
+  categories: string;
+  size: string;
 };

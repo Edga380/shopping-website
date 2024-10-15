@@ -4,10 +4,12 @@ import AdminSlideShow from "../../../components/slideShow/AdminSlideShow";
 export default async function AdminSlideshow() {
   return (
     <>
-      <div className="flex justify-between items-center gap-4">
-        <PageHeader>Adjust slideshow</PageHeader>
+      <div className="flex bg-color-pallet-02 p-2">
+        <PageHeader>Main Slideshow</PageHeader>
       </div>
-      <AdminSlideShow />
+      <div className="p-2 mb-28">
+        <AdminSlideShow />
+      </div>
     </>
   );
 }

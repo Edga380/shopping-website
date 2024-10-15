@@ -15,10 +15,10 @@ export default async function deleteSlideShowImage(
         `
         DELETE
         FROM SlideshowImages
-        WHERE image_id = ?
+        WHERE image_id = ? AND path = ?
         `
       )
-      .run(imageId);
+      .run(imageId, path);
 
     if (result) {
       await fs.unlink(`public/slideShow/${path}`);
@@ -27,5 +27,4 @@ export default async function deleteSlideShowImage(
     console.error("Failed to delete slide show image: ", error);
     throw error;
   }
-  return;
 }

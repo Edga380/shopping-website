@@ -23,10 +23,10 @@ export default async function moveRightSlideShowImageSpot(
       database
         .prepare(
           `
-            UPDATE SlideshowImages
-            SET image_spot = ?
-            WHERE image_id = ?
-            `
+          UPDATE SlideshowImages
+          SET image_spot = ?
+          WHERE image_id = ?
+          `
         )
         .run(imageSpot + 1, imageId);
     }

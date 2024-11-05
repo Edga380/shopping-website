@@ -114,7 +114,7 @@ export default function NavBar() {
               className="transition-transform duration-300 transform hover:scale-110"
             ></Image>
           </Link>
-          <Link className="mr-5" href={"/"}>
+          <Link className="mr-5" href={"/cart"}>
             <Image
               src="/cart_img.svg"
               width={30}

@@ -34,6 +34,7 @@ export type UpdatedProduct = {
   created_at: string;
   product_variations: [
     {
+      product_variation_id: number;
       color: string;
       product_size_inventory: [
         {
@@ -46,36 +47,6 @@ export type UpdatedProduct = {
       images: string[];
     }
   ];
-};
-
-export type UpdateProduct = {
-  product_id: string;
-  name: string;
-  description: string;
-  category: string;
-  priceInPennies: string;
-  stock: string;
-  sold: string;
-  gender: string;
-  colors: string[];
-  sizes: string[];
-  isAvailable: string;
-  existingImages: string[];
-  newImages: string[];
-};
-
-export type NewestBestSellerProducts = {
-  product_id: number;
-  name: string;
-  priceInPennies: number;
-  images: string[];
-};
-
-export type NewestBestSellerProduct = {
-  product_id: number;
-  name: string;
-  priceInPennies: number;
-  images: string;
 };
 
 export type SlideShowImages = {
@@ -101,11 +72,31 @@ export type NewsLetterEmailsData = {
 };
 
 export type NewsLetterSection = {
+  sectionId: number;
   title: string;
   imageUrl: string;
   message: string;
   buttonLink: string;
   buttonName: string;
+};
+
+export type getNewsLetterSections = {
+  id: number;
+  subject: string;
+  created_at: string;
+  sections: [
+    {
+      section: [
+        {
+          title: string;
+          message: string;
+          button_name: string;
+          button_link: string;
+          image_path: string;
+        }
+      ];
+    }
+  ];
 };
 
 export type getProductCategories = {
@@ -122,4 +113,14 @@ export type getProductSizes = {
   product_size_id: number;
   categories: string;
   size: string;
+};
+
+export type Cart = {
+  cart_id: number;
+  user_id: number;
+  product_id: number;
+  product_variation_id: number;
+  product_size: string;
+  quantity: number;
+  created_at: string;
 };

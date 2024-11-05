@@ -27,14 +27,18 @@ export default function AdminLayout({
             Sizes
           </AdminNavSubLink>
         </AdminNavLink>
-        <AdminNavLink name="Customers" href="/admin/users"></AdminNavLink>
-        <AdminNavLink name="Sales" href="/admin/orders"></AdminNavLink>
+        <AdminNavLink name="Users" href="/admin/users"></AdminNavLink>
+        <AdminNavLink name="Orders" href="/admin/orders"></AdminNavLink>
         <AdminNavLink name="Slideshow" href="/admin/slideshow"></AdminNavLink>
-        <AdminNavLink
-          name="ContactUsSubmissions"
-          href="/admin/contactUsSubmissions"
-        ></AdminNavLink>
-        <AdminNavLink name="NewsLetter" href="/admin/newsLetter"></AdminNavLink>
+        <AdminNavLink name="Contact Us" href="/admin/contactUs"></AdminNavLink>
+        <AdminNavLink name="Newsletter" href="/admin/newsLetter">
+          <AdminNavSubLink href="/admin/newsLetter/createNewsLetter">
+            Create NewsLetter
+          </AdminNavSubLink>
+          <AdminNavSubLink href="/admin/newsLetter/emailList">
+            Email List
+          </AdminNavSubLink>
+        </AdminNavLink>
       </AdminNav>
       <div></div>
       <div>{children}</div>

@@ -18,7 +18,7 @@ export default function SearchProducts({
     searchInput && (
       <div className="mt-8 bg-color-pallet-02 w-1/4 max-h-[79%] rounded-xl mx-auto p-2 pt-0 overflow-hidden z-40">
         <div className="text-text-color-dark-green mt-2 ml-4">
-          Search for: "{searchInput}"
+          Search for: &quot;{searchInput}&quot;
         </div>
         {products
           .filter((product) =>

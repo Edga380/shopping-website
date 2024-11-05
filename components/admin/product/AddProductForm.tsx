@@ -145,9 +145,10 @@ export default function AddProductFrom() {
       );
 
       if (duplicateImages) {
-        alert(
-          `Images with the same name are not allowed: "${newImage[0].name}"`
-        );
+        setMessageData({
+          message: `Images with the same name are not allowed: "${newImage[0].name}"`,
+          color: "red",
+        });
       } else {
         setSelectedImages([
           ...selectedImages,

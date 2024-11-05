@@ -1,5 +1,5 @@
 import { PageHeader } from "../../../components/admin/PageHeader";
-import { getAllProducts } from "../../../database/models/product/getAllProduct";
+import { getAllProducts } from "../../../database/models/product/getAllProducts";
 import DisplayProducts from "../../../components/admin/DisplayProducts";
 
 export const fetchCache = "force-no-store";

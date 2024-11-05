@@ -1,38 +1,59 @@
 "use server";
 
 import newClient from "../../utils/newClient";
-import {
-  NewestBestSellerProduct,
-  NewestBestSellerProducts,
-} from "../../../types/databaseTypes";
+import { OriginalProduct, UpdatedProduct } from "../../../types/databaseTypes";
 
-export async function getBestSellerProducts(): Promise<
-  NewestBestSellerProducts[]
-> {
+export async function getBestSellerProducts(): Promise<UpdatedProduct[]> {
   const database = newClient();
   try {
     const products = database
       .prepare(
         `
-      SELECT 
-      p.product_id, p.name, p.priceInPennies,
-      GROUP_CONCAT(DISTINCT pi.path) AS images
-      FROM Products p
-      LEFT JOIN ProductImages pi ON p.product_id = pi.product_id
-      WHERE p.isAvailable = ?
-      GROUP BY p.product_id
-      ORDER BY p.sold DESC
-      LIMIT 6
-      `
+        SELECT p.*,
+        JSON_GROUP_ARRAY(
+          JSON_OBJECT(
+            'product_variation_id', pv.product_variation_id,
+            'color', pc.color,
+            'product_size_inventory', (
+              SELECT
+                JSON_GROUP_ARRAY(
+                  JSON_OBJECT(
+                    'size', ps.size,
+                    'stock', pst.stock,
+                    'sold', pst.sold,
+                    'discount', pst.discount
+                  )
+                )
+                  FROM ProductVariationSizeInventory pst 
+                  JOIN ProductSize ps ON pst.size_id = ps.product_size_id 
+                  WHERE pst.product_variation_id = pv.product_variation_id
+                  ORDER BY pst.sold DESC
+                ),
+                'images', (
+                  SELECT JSON_GROUP_ARRAY(pi.path) 
+                  FROM ProductImages pi 
+                  WHERE pi.product_variation_id = pv.product_variation_id
+                )
+              )
+            ) AS product_variations
+        FROM Product p
+        JOIN ProductVariation pv ON p.product_id = pv.product_id
+        JOIN ProductColor pc ON pv.color_id = pc.product_color_id
+        WHERE p.is_available = ?
+        GROUP BY p.product_id
+        LIMIT 6
+        `
       )
-      .all("true") as NewestBestSellerProduct[];
+      .all("true") as OriginalProduct[];
 
-    return products.map((productData) => {
+    const parsedProductsVariations = products.map((product) => {
       return {
-        ...productData,
-        images: productData.images ? productData.images.split(",") : [],
+        ...product,
+        product_variations: JSON.parse(product.product_variations),
       };
     });
+
+    return parsedProductsVariations as UpdatedProduct[];
   } catch (error) {
     console.error(`Error getting products:`, error);
     throw error;

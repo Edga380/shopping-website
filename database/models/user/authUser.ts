@@ -27,10 +27,10 @@ export default async function authUser() {
           const userData = database
             .prepare(
               `
-                    SELECT user_id, username, created_at
-                    FROM Users
-                    WHERE ${column} = ?
-                    `
+              SELECT user_id, email, username, created_at
+              FROM Users
+              WHERE ${column} = ?
+              `
             )
             .get(cookieId) as UserData;
 

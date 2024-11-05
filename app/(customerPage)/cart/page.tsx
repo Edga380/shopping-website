@@ -2,19 +2,19 @@
 
 import Link from "next/link";
 import authUser from "../../../database/models/user/authUser";
-import DisplayUserProfile from "../../../components/customer/DisplayUserProfile";
+import DisplayShoppingCart from "../../../components/customer/DisplayShoppingCart";
 
-export default async function Profile() {
+export default async function Cart() {
   const user = await authUser();
 
   return (
     <div className="bg-color-pallet-02 my-4 rounded-2xl flex justify-center">
       {user ? (
-        <DisplayUserProfile user={user} />
+        <DisplayShoppingCart user={user} />
       ) : (
         <div className="flex-col w-full">
           <div className="bg-color-pallet-03 text-text-color-dark-green text-2xl text-center font-semibold p-2 rounded-t-2xl">
-            Profile
+            Cart
           </div>
           <div className="text-text-color-dark-green text-2xl text-center mt-4">
             User not found

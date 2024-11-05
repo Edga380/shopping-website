@@ -1,6 +1,7 @@
 "use server";
 
 import newClient from "../../utils/newClient";
+import { headers } from "next/headers";
 import dotenv from "dotenv";
 dotenv.config();
 import sgMail from "@sendgrid/mail";
@@ -12,33 +13,51 @@ import {
 export default async function sendNewsLetter(
   emailsData: NewsLetterEmailsData[] | undefined,
   subject: string,
-  sections: NewsLetterSection[]
+  sections: NewsLetterSection[],
+  imageFilesFormData: FormData
 ) {
+  if (emailsData === undefined || emailsData.length === 0) {
+    throw new Error("Empty 'emailsData' variable.");
+  }
+
   const database = newClient();
 
-  if (!emailsData) {
-    return {
-      success: false,
-      message: "There is no emails to send newsletter to.",
-      color: "red",
-    };
-  }
+  const getHeaders = headers();
+
+  const protocol = getHeaders.get("x-forwarded-proto");
+
+  const host = getHeaders.get("host");
+
+  const origin = `${protocol}://${host}/public/newsLetters/`;
+
+  const storedImages: { imageId: number; imageFile: File }[] = [];
+
+  Object.entries(Object.fromEntries(imageFilesFormData.entries())).forEach(
+    ([key, value]) => {
+      const imageId = Number(key.split("-")[1]) as number;
+      const imageFile = value as File;
+      storedImages.push({ imageId, imageFile });
+    }
+  );
 
   if (process.env.SENDGRID_API_KEY) {
     sgMail.setApiKey(process.env.SENDGRID_API_KEY);
   } else {
-    return {
-      success: false,
-      message: "Sendgrid services not available at the momment.",
-      color: "red",
-    };
+    throw new Error("Can't connect to 'sendGrid' services.");
   }
 
   let assembleHtml = ``;
 
   sections.forEach((section) => {
-    if (section.imageUrl) {
-      assembleHtml += `<img src="${section.imageUrl}" alt="image not found" style="width: 600px"/>`;
+    let imageName: string = "";
+
+    storedImages.forEach((storedImage) => {
+      if (storedImage.imageId === section.sectionId) {
+        imageName = storedImage.imageFile.name;
+      }
+    });
+    if (imageName) {
+      assembleHtml += `<img src="${origin}${imageName}" alt="image not found" style="width: 600px"/>`;
     }
     if (section.title) {
       assembleHtml += `<h2 style="padding: 20px 0 0 0; color: #333333; font-size: 20px;">${section.title}</h2>`;
@@ -82,61 +101,58 @@ export default async function sendNewsLetter(
           `,
   };
 
-  const transaction = database.transaction(async () => {
-    try {
-      const result = database
-        .prepare(
-          `
+  const insertNewsLetterData = database.transaction(async () => {
+    const result = database
+      .prepare(
+        `
             INSERT 
             INTO NewsLetters
               (subject)
             VALUES
               (?)
             `
-        )
-        .run(subject);
+      )
+      .run(subject);
 
-      sections.forEach((section) => {
-        database
-          .prepare(
-            `
+    sections.forEach((section) => {
+      let imageName: string = "";
+
+      storedImages.forEach((storedImage) => {
+        if (storedImage.imageId === section.sectionId) {
+          imageName = storedImage.imageFile.name;
+        }
+      });
+
+      database
+        .prepare(
+          `
               INSERT
               INTO NewsLetterSections
-                (news_letter_id, image_url, title, message, button_link, button_name)
+                (news_letter_id, image_path, title, message, button_link, button_name)
               VALUES (?, ?, ?, ?, ?, ?)
               `
-          )
-          .run(
-            result.lastInsertRowid,
-            section.imageUrl,
-            section.title,
-            section.message,
-            section.buttonLink,
-            section.buttonName
-          );
-      });
-
-      emailsData.forEach(async (email) => {
-        await sgMail.send({
-          ...emailMessageData,
-          to: email.news_letter_subscription_email,
-        });
-      });
-    } catch (error) {
-      console.error("Error inside sendNewsLetter.ts: ", error);
-      return {
-        success: false,
-        message: "Something went wrong while sending the newsletter.",
-        color: "red",
-      };
-    }
+        )
+        .run(
+          result.lastInsertRowid,
+          imageName,
+          section.title,
+          section.message,
+          section.buttonLink,
+          section.buttonName
+        );
+    });
   });
 
-  transaction();
+  try {
+    insertNewsLetterData();
 
-  return {
-    success: true,
-    message: "NewsLetter sent successfully.",
-    color: "green",
-  };
+    emailsData.forEach(async (email) => {
+      await sgMail.send({
+        ...emailMessageData,
+        to: email.news_letter_subscription_email,
+      });
+    });
+  } catch (error) {
+    throw error;
+  }
 }

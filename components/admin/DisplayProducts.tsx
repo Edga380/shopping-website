@@ -20,7 +20,8 @@ export default function DisplayProducts({
 
   return (
     <>
-      <div className="grid grid-cols-[0.5fr_2fr_0.5fr_0.5fr_0.5fr_0.5fr_0.3fr_0.5fr_0.5fr] items-center mt-2 px-2 bg-color-pallet-03 text-text-color-dark-green text-lg font-semibold shadow-md">
+      <div className="grid grid-cols-[0.3fr_0.5fr_2fr_0.5fr_0.5fr_0.5fr_0.5fr_0.3fr_0.5fr_0.5fr] items-center mt-2 px-2 bg-color-pallet-03 text-text-color-dark-green text-lg font-semibold shadow-md">
+        <div>{products.length}</div>
         <div>Name</div>
         <div>Description</div>
         <div className="mx-auto">Category</div>
@@ -33,8 +34,9 @@ export default function DisplayProducts({
       {products.map((product, index) => (
         <div
           key={index}
-          className="grid grid-cols-[0.5fr_2fr_0.5fr_0.5fr_0.5fr_0.5fr_0.3fr_0.5fr_0.5fr] items-center mt-2 px-2 bg-color-pallet-02 text-text-color-dark-green shadow-md"
+          className="grid grid-cols-[0.3fr_0.5fr_2fr_0.5fr_0.5fr_0.5fr_0.5fr_0.3fr_0.5fr_0.5fr] items-center mt-2 px-2 bg-color-pallet-02 text-text-color-dark-green shadow-md"
         >
+          <div>{product.product_id}</div>
           <div>{product.name}</div>
           <div>{product.description.slice(0, 60)}</div>
           <div className="mx-auto">{product.category}</div>

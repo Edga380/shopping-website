@@ -15,10 +15,13 @@ CREATE TABLE IF NOT EXISTS Users (
 -- Cart table
 CREATE TABLE IF NOT EXISTS Cart (
   cart_id INTEGER PRIMARY KEY AUTOINCREMENT,
-  cart_user_id INTEGER,
-  product_id TEXT,
+  user_id INTEGER,
+  product_id INTEGER,
+  product_variation_id INTEGER,
+  product_size TEXT,
+  quantity INTEGER,
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY (cart_user_id) REFERENCES Users(user_id)
+  FOREIGN KEY (user_id) REFERENCES Users(user_id)
 );
 
 -- Product table
@@ -124,9 +127,10 @@ CREATE TABLE IF NOT EXISTS NewsLetters (
 -- NewsLetterSections table
 CREATE TABLE IF NOT EXISTS NewsLetterSections (
   news_letter_id INTEGER,
-  image_url TEXT,
+  image_path TEXT,
   title TEXT,
   message TEXT,
   button_link TEXT,
-  button_name TEXT
+  button_name TEXT,
+  FOREIGN KEY(news_letter_id) REFERENCES NewsLetters (id) ON DELETE CASCADE
 );

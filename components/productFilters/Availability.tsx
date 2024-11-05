@@ -25,11 +25,34 @@ export default function AvailabilityFilter({
         isInput={true}
         onClick={availableFilter}
         totalAmount={
-          products.filter((product) => product.isAvailable === "true").length
+          products.reduce<string[]>((stock, product) => {
+            product.product_variations.forEach((product_variation) => {
+              if (
+                product_variation.product_size_inventory.every(
+                  (product_size_inventory_data) =>
+                    Number(product_size_inventory_data.stock) > 0
+                )
+              ) {
+                stock.push(product_variation.color);
+              }
+            });
+            return stock;
+          }, []).length
         }
         filteredAmount={
-          storedProducts.filter((product) => product.isAvailable === "true")
-            .length
+          storedProducts.reduce<string[]>((stock, storedProduct) => {
+            storedProduct.product_variations.forEach((product_variation) => {
+              if (
+                product_variation.product_size_inventory.every(
+                  (product_size_inventory_data) =>
+                    Number(product_size_inventory_data.stock) > 0
+                )
+              ) {
+                stock.push(product_variation.color);
+              }
+            });
+            return stock;
+          }, []).length
         }
       ></DropDownMenuOption>
       <DropDownMenuOption
@@ -38,11 +61,34 @@ export default function AvailabilityFilter({
         isInput={true}
         onClick={unAvailableFilter}
         totalAmount={
-          products.filter((product) => product.isAvailable === "false").length
+          products.reduce<string[]>((stock, product) => {
+            product.product_variations.forEach((product_variation) => {
+              if (
+                product_variation.product_size_inventory.some(
+                  (product_size_inventory_data) =>
+                    Number(product_size_inventory_data.stock) === 0
+                )
+              ) {
+                stock.push(product_variation.color);
+              }
+            });
+            return stock;
+          }, []).length
         }
         filteredAmount={
-          storedProducts.filter((product) => product.isAvailable === "false")
-            .length
+          storedProducts.reduce<string[]>((stock, storedProduct) => {
+            storedProduct.product_variations.forEach((product_variation) => {
+              if (
+                product_variation.product_size_inventory.some(
+                  (product_size_inventory_data) =>
+                    Number(product_size_inventory_data.stock) === 0
+                )
+              ) {
+                stock.push(product_variation.color);
+              }
+            });
+            return stock;
+          }, []).length
         }
       ></DropDownMenuOption>
     </DropDownMenu>

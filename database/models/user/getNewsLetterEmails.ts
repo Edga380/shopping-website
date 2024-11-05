@@ -18,6 +18,6 @@ export default async function getNewsLetterEmails() {
 
     return emailsData;
   } catch (error) {
-    console.error("Error inside getNewsLetterEmail.ts ", error);
+    throw error;
   }
 }

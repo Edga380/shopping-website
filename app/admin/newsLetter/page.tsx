@@ -1,18 +1,16 @@
 import { PageHeader } from "../../../components/admin/PageHeader";
-import NewsLetterForm from "../../../components/admin/newsLetter/NewsLetterForm";
-import getNewsLetterEmails from "../../../database/models/user/getNewsLetterEmails";
+import DisplayArchivedNewsLetters from "../../../components/admin/newsLetter/DisplayArchivedNewsLetters";
+import getNewsLetters from "../../../database/models/newsLetter/getNewsLetters";
 
-export default async function ContactUsSubmissions() {
-  const emailsData = await getNewsLetterEmails();
+export default async function Newsletter() {
+  const fetchNewsLetters = await getNewsLetters();
   return (
     <>
-      <div className="w-3/4 mx-auto">
-        <PageHeader>Send NewsLetter</PageHeader>
-        <>
-          <div className="mt-2 mb-20 p-2 bg-color-pallet-01 text-text-color-dark-green rounded-lg border-2 border-color-pallet-04">
-            <NewsLetterForm emailsData={emailsData} />
-          </div>
-        </>
+      <div className="flex bg-color-pallet-02 p-2">
+        <PageHeader>Newsletter</PageHeader>
+      </div>
+      <div className="p-2 mb-28">
+        <DisplayArchivedNewsLetters fetchNewsLetters={fetchNewsLetters} />
       </div>
     </>
   );

@@ -12,28 +12,45 @@ export default function ProductImages({ images }: { images: string[] }) {
 
   return (
     <div className="flex">
-      <div className="flex flex-wrap w-1/4 mb-auto">
-        {images.map((image, index) => (
-          <button key={index} onClick={() => handleSelectedImage(image)}>
+      {images.length > 0 ? (
+        <>
+          <div className="flex flex-wrap w-1/4 mb-auto">
+            {images.map((image, index) => (
+              <button key={index} onClick={() => handleSelectedImage(image)}>
+                <Image
+                  src={`${image}`}
+                  width={100}
+                  height={100}
+                  alt={image}
+                  className="m-4"
+                ></Image>
+              </button>
+            ))}
+          </div>
+          <div className="py-4 mx-auto">
             <Image
-              src={`/products/${image}`}
-              width={100}
-              height={100}
-              alt={image}
-              className="m-4"
+              key={images[0]}
+              src={`${selectedImage}`}
+              width={800}
+              height={600}
+              alt={images[0]}
             ></Image>
-          </button>
-        ))}
-      </div>
-      <div className="py-4 mx-auto">
-        <Image
-          key={images[0]}
-          src={`/products/${selectedImage}`}
-          width={800}
-          height={600}
-          alt={images[0]}
-        ></Image>
-      </div>
+          </div>
+        </>
+      ) : (
+        <>
+          <div className="flex flex-wrap w-1/4 mb-auto"></div>
+          <div className="py-4 mx-auto">
+            <Image
+              key={images[0]}
+              src={`/products/product_not_found.svg`}
+              width={800}
+              height={600}
+              alt={images[0]}
+            ></Image>
+          </div>
+        </>
+      )}
     </div>
   );
 }

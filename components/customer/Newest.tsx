@@ -1,31 +1,13 @@
 "use client";
 
 import ProductCard from "./ProductCard";
-import { getNewestProducts } from "../../database/models/product/getNewestProducts";
-import { useState, useEffect } from "react";
-import {
-  UpdatedProduct,
-  NewestBestSellerProducts,
-} from "../../types/databaseTypes";
+import { UpdatedProduct } from "../../types/databaseTypes";
 
-export default function Newest() {
-  const [products, setProducts] = useState<
-    (UpdatedProduct | NewestBestSellerProducts)[]
-  >([]);
-
-  useEffect(() => {
-    const fetchNewstProducts = async () => {
-      try {
-        const fetchedProducts = await getNewestProducts();
-        setProducts(fetchedProducts);
-      } catch (error) {
-        console.error("Failed to fetch newest products: ", error);
-        throw error;
-      }
-    };
-    fetchNewstProducts();
-  }, []);
-
+export default function Newest({
+  newestProducts,
+}: {
+  newestProducts: UpdatedProduct[];
+}) {
   return (
     <>
       <div className="flex flex-col items-center">
@@ -34,8 +16,11 @@ export default function Newest() {
         </h2>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-        {products.map((product) => (
-          <ProductCard key={product.product_id} product={product}></ProductCard>
+        {newestProducts.map((newestProduct) => (
+          <ProductCard
+            key={newestProduct.product_id}
+            product={newestProduct}
+          ></ProductCard>
         ))}
       </div>
     </>

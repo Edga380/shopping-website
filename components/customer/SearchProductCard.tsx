@@ -13,6 +13,7 @@ export default function SearchProductCard({
   toggleSearchBar: () => void;
   handleClearSearchInput: () => void;
 }) {
+  console.log(product.product_variations);
   return (
     <Link
       href={`/products/${product.product_id}/product`}
@@ -24,10 +25,14 @@ export default function SearchProductCard({
       <div className="flex transition-all duration-300 transform hover:scale-105 hover:bg-color-pallet-04 hover:underline rounded-[0.5rem] p-2 m-2">
         <div className="h-14 w-20 overflow-hidden rounded">
           <Image
-            src={`/products/${product.images[0]}`}
+            src={`${
+              product.product_variations[0].images.length === 0
+                ? "/products/product_not_found.svg"
+                : `${product.product_variations[0].images[0]}`
+            }`}
             width={208}
             height={208}
-            alt="User profile icon"
+            alt={`${product.product_variations[0].images[0]}`}
             className="scale-125"
           ></Image>
         </div>

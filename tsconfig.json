@@ -26,7 +26,7 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "database/db.js"
-, "database/seedData/seedData.js"  ],
+    "database/seedData/seedDataOld.js"
+  ],
   "exclude": ["node_modules"]
 }

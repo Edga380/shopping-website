@@ -13,6 +13,7 @@ export default async function getProduct(
     SELECT p.*,
     JSON_GROUP_ARRAY(
         JSON_OBJECT(
+          'product_variation_id', pv.product_variation_id,
           'color', pc.color,
           'product_size_inventory', (
             SELECT 

@@ -1,158 +1,1184 @@
 [
   {
-    "name": "Product 1",
-    "description": "Product 1 description",
-    "category": "jumper",
-    "priceInPennies": 9999,
-    "stock": 10,
-    "sold": 2,
-    "gender": "unisex",
-    "colors": ["Red"],
-    "sizes": ["S", "M", "L", "XL"],
-    "isAvailable": "true",
-    "images": []
+    "name": "Elegant Dress",
+    "description": "An elegant aqua dress that is perfect for formal occasions, featuring a tailored fit and a soft, flowing fabric.",
+    "category": "Dresses",
+    "basePriceInPennies": "5999",
+    "gender": "Female",
+    "selectedInventoryData": [
+      {
+        "color": "Aqua",
+        "size": "XS",
+        "stock": "12",
+        "sold": "0",
+        "discount": "5"
+      },
+      {
+        "color": "Aqua",
+        "size": "S",
+        "stock": "15",
+        "sold": "0",
+        "discount": "0"
+      },
+      {
+        "color": "Aqua",
+        "size": "M",
+        "stock": "8",
+        "sold": "0",
+        "discount": "0"
+      }
+    ],
+    "isAvailable": "true"
   },
   {
-    "name": "Product 2",
-    "description": "Product 2 description",
-    "category": "tshirt",
-    "priceInPennies": 19999,
-    "stock": 20,
-    "sold": 4,
-    "gender": "male",
-    "colors": ["Blue"],
-    "sizes": ["M", "L", "XL"],
-    "isAvailable": "true",
-    "images": []
+    "name": "Classic Hat",
+    "description": "A timeless black hat that adds a touch of sophistication to any outfit.",
+    "category": "Hats",
+    "basePriceInPennies": "1999",
+    "gender": "Unisex",
+    "selectedInventoryData": [
+      {
+        "color": "Black",
+        "size": "S",
+        "stock": "20",
+        "sold": "5",
+        "discount": "10"
+      },
+      {
+        "color": "Black",
+        "size": "M",
+        "stock": "18",
+        "sold": "3",
+        "discount": "0"
+      },
+      {
+        "color": "Black",
+        "size": "L",
+        "stock": "10",
+        "sold": "2",
+        "discount": "0"
+      }
+    ],
+    "isAvailable": "true"
   },
   {
-    "name": "Product 3",
-    "description": "Product 3 description",
-    "category": "socks",
-    "priceInPennies": 29999,
-    "stock": 30,
-    "sold": 6,
-    "gender": "female",
-    "colors": ["Green"],
-    "sizes": ["L", "XL"],
-    "isAvailable": "true",
-    "images": []
+    "name": "Hooded Comfort",
+    "description": "Stay cozy in this blue hoodie with a soft interior and spacious front pocket.",
+    "category": "Hoodies",
+    "basePriceInPennies": "3499",
+    "gender": "Male",
+    "selectedInventoryData": [
+      {
+        "color": "Blue",
+        "size": "S",
+        "stock": "25",
+        "sold": "8",
+        "discount": "15"
+      },
+      {
+        "color": "Blue",
+        "size": "M",
+        "stock": "30",
+        "sold": "10",
+        "discount": "0"
+      },
+      {
+        "color": "Blue",
+        "size": "L",
+        "stock": "15",
+        "sold": "5",
+        "discount": "0"
+      }
+    ],
+    "isAvailable": "true"
   },
   {
-    "name": "Product 4",
-    "description": "Product 4 description",
-    "category": "pants",
-    "priceInPennies": 39999,
-    "stock": 40,
-    "sold": 8,
-    "gender": "male",
-    "colors": ["Red"],
-    "sizes": ["S", "M"],
-    "isAvailable": "true",
-    "images": []
+    "name": "Vibrant Skirt",
+    "description": "Brighten your wardrobe with this yellow skirt, designed with a comfortable waistband and pleated style.",
+    "category": "Skirts",
+    "basePriceInPennies": "2999",
+    "gender": "Female",
+    "selectedInventoryData": [
+      {
+        "color": "Yellow",
+        "size": "XS",
+        "stock": "10",
+        "sold": "0",
+        "discount": "0"
+      },
+      {
+        "color": "Yellow",
+        "size": "S",
+        "stock": "12",
+        "sold": "1",
+        "discount": "5"
+      },
+      {
+        "color": "Yellow",
+        "size": "M",
+        "stock": "8",
+        "sold": "3",
+        "discount": "0"
+      }
+    ],
+    "isAvailable": "true"
   },
   {
-    "name": "Product 5",
-    "description": "Product 5 description",
-    "category": "jumper",
-    "priceInPennies": 49999,
-    "stock": 50,
-    "sold": 10,
-    "gender": "female",
-    "colors": ["Red"],
-    "sizes": ["M", "L"],
-    "isAvailable": "true",
-    "images": []
+    "name": "Athletic Trousers",
+    "description": "Durable navy trousers with a stretch waist for active days, made for comfort and mobility.",
+    "category": "Trousers",
+    "basePriceInPennies": "4499",
+    "gender": "Male",
+    "selectedInventoryData": [
+      {
+        "color": "Navy",
+        "size": "W28L28",
+        "stock": "20",
+        "sold": "2",
+        "discount": "0"
+      },
+      {
+        "color": "Navy",
+        "size": "W30L30",
+        "stock": "15",
+        "sold": "1",
+        "discount": "10"
+      },
+      {
+        "color": "Navy",
+        "size": "W32L32",
+        "stock": "10",
+        "sold": "0",
+        "discount": "5"
+      }
+    ],
+    "isAvailable": "true"
   },
   {
-    "name": "Product 6",
-    "description": "Product 6 description",
-    "category": "tshirt",
-    "priceInPennies": 59999,
-    "stock": 60,
-    "sold": 12,
-    "gender": "unisex",
-    "colors": ["Black"],
-    "sizes": ["S", "L"],
-    "isAvailable": "true",
-    "images": []
+    "name": "Crewneck T-shirt",
+    "description": "A crisp white T-shirt with a classic crewneck fit, ideal for casual wear or layering.",
+    "category": "T-shirt",
+    "basePriceInPennies": "1299",
+    "gender": "Unisex",
+    "selectedInventoryData": [
+      {
+        "color": "White",
+        "size": "XS",
+        "stock": "25",
+        "sold": "5",
+        "discount": "0"
+      },
+      {
+        "color": "White",
+        "size": "M",
+        "stock": "30",
+        "sold": "10",
+        "discount": "0"
+      },
+      {
+        "color": "White",
+        "size": "L",
+        "stock": "18",
+        "sold": "7",
+        "discount": "0"
+      }
+    ],
+    "isAvailable": "true"
   },
   {
-    "name": "Product 7",
-    "description": "Product 7 description",
-    "category": "jumper",
-    "priceInPennies": 69999,
-    "stock": 70,
-    "sold": 14,
-    "gender": "unisex",
-    "colors": ["Red"],
-    "sizes": ["L"],
-    "isAvailable": "true",
-    "images": []
+    "name": "Soft Jumper",
+    "description": "Add warmth to your wardrobe with this soft pink jumper, perfect for a relaxed day out.",
+    "category": "Jumpers",
+    "basePriceInPennies": "3999",
+    "gender": "Female",
+    "selectedInventoryData": [
+      {
+        "color": "Pink",
+        "size": "S",
+        "stock": "15",
+        "sold": "5",
+        "discount": "10"
+      },
+      {
+        "color": "Pink",
+        "size": "M",
+        "stock": "20",
+        "sold": "3",
+        "discount": "5"
+      },
+      {
+        "color": "Pink",
+        "size": "L",
+        "stock": "10",
+        "sold": "0",
+        "discount": "0"
+      }
+    ],
+    "isAvailable": "true"
   },
   {
-    "name": "Product 8",
-    "description": "Product 8 description",
-    "category": "tshirt",
-    "priceInPennies": 79999,
-    "stock": 45,
-    "sold": 34,
-    "gender": "male",
-    "colors": ["Blue"],
-    "sizes": ["L", "XL"],
-    "isAvailable": "true",
-    "images": []
+    "name": "Sneakers",
+    "description": "Stylish red sneakers with durable construction and a comfortable fit for everyday wear.",
+    "category": "Shoes",
+    "basePriceInPennies": "5499",
+    "gender": "Unisex",
+    "selectedInventoryData": [
+      {
+        "color": "Red",
+        "size": "UK6",
+        "stock": "20",
+        "sold": "6",
+        "discount": "0"
+      },
+      {
+        "color": "Red",
+        "size": "UK8",
+        "stock": "15",
+        "sold": "2",
+        "discount": "10"
+      },
+      {
+        "color": "Red",
+        "size": "UK10",
+        "stock": "12",
+        "sold": "1",
+        "discount": "5"
+      }
+    ],
+    "isAvailable": "true"
   },
   {
-    "name": "Product 9",
-    "description": "Product 9 description",
-    "category": "socks",
-    "priceInPennies": 89999,
-    "stock": 67,
-    "sold": 12,
-    "gender": "female",
-    "colors": ["Green"],
-    "sizes": ["XXL"],
-    "isAvailable": "true",
-    "images": []
+    "name": "Leather Hat",
+    "description": "A sturdy brown leather hat with a timeless style, ideal for outdoor adventures.",
+    "category": "Hats",
+    "basePriceInPennies": "2999",
+    "gender": "Male",
+    "selectedInventoryData": [
+      {
+        "color": "Brown",
+        "size": "M",
+        "stock": "10",
+        "sold": "2",
+        "discount": "0"
+      },
+      {
+        "color": "Brown",
+        "size": "L",
+        "stock": "8",
+        "sold": "1",
+        "discount": "5"
+      },
+      {
+        "color": "Brown",
+        "size": "XL",
+        "stock": "5",
+        "sold": "0",
+        "discount": "10"
+      }
+    ],
+    "isAvailable": "true"
   },
   {
-    "name": "Product 10",
-    "description": "Product 10 description",
-    "category": "pants",
-    "priceInPennies": 99999,
-    "stock": 23,
-    "sold": 67,
-    "gender": "male",
-    "colors": ["Grey"],
-    "sizes": ["XL"],
-    "isAvailable": "true",
-    "images": []
+    "name": "Comfort Fit Socks",
+    "description": "Comfortable green socks with reinforced soles, perfect for long days.",
+    "category": "Socks",
+    "basePriceInPennies": "799",
+    "gender": "Unisex",
+    "selectedInventoryData": [
+      {
+        "color": "Green",
+        "size": "UK4-UK6",
+        "stock": "25",
+        "sold": "10",
+        "discount": "0"
+      },
+      {
+        "color": "Green",
+        "size": "UK6-UK8",
+        "stock": "20",
+        "sold": "5",
+        "discount": "5"
+      },
+      {
+        "color": "Green",
+        "size": "UK8-UK10",
+        "stock": "15",
+        "sold": "2",
+        "discount": "0"
+      }
+    ],
+    "isAvailable": "true"
   },
   {
-    "name": "Product 11",
-    "description": "Product 11 description",
-    "category": "jumper",
-    "priceInPennies": 199999,
-    "stock": 90,
-    "sold": 43,
-    "gender": "female",
-    "colors": ["Purple"],
-    "sizes": ["S", "M"],
-    "isAvailable": "true",
-    "images": []
+    "name": "Breeze Hoodie",
+    "description": "A refreshing aqua hoodie, designed for ultimate comfort and a stylish fit.",
+    "category": "Hoodies",
+    "basePriceInPennies": "3799",
+    "gender": "Unisex",
+    "selectedInventoryData": [
+      {
+        "color": "Aqua",
+        "size": "XS",
+        "stock": "12",
+        "sold": "2",
+        "discount": "5"
+      },
+      {
+        "color": "Aqua",
+        "size": "S",
+        "stock": "15",
+        "sold": "3",
+        "discount": "0"
+      },
+      {
+        "color": "Aqua",
+        "size": "M",
+        "stock": "20",
+        "sold": "1",
+        "discount": "0"
+      },
+      {
+        "color": "Black",
+        "size": "L",
+        "stock": "10",
+        "sold": "2",
+        "discount": "10"
+      },
+      {
+        "color": "Black",
+        "size": "XL",
+        "stock": "5",
+        "sold": "1",
+        "discount": "0"
+      }
+    ],
+    "isAvailable": "true"
   },
   {
-    "name": "Product 12",
-    "description": "Product 12 description",
-    "category": "tshirt",
-    "priceInPennies": 299999,
-    "stock": 230,
-    "sold": 18,
-    "gender": "unisex",
-    "colors": ["Multi"],
-    "sizes": ["XS", "S"],
-    "isAvailable": "true",
-    "images": []
+    "name": "Sunny Day Dress",
+    "description": "A bright yellow dress that is perfect for sunny weather, with a lightweight fabric.",
+    "category": "Dresses",
+    "basePriceInPennies": "5999",
+    "gender": "Female",
+    "selectedInventoryData": [
+      {
+        "color": "Yellow",
+        "size": "XS",
+        "stock": "10",
+        "sold": "0",
+        "discount": "0"
+      },
+      {
+        "color": "Yellow",
+        "size": "S",
+        "stock": "15",
+        "sold": "2",
+        "discount": "0"
+      },
+      {
+        "color": "Yellow",
+        "size": "M",
+        "stock": "8",
+        "sold": "1",
+        "discount": "5"
+      },
+      {
+        "color": "White",
+        "size": "L",
+        "stock": "7",
+        "sold": "1",
+        "discount": "10"
+      },
+      {
+        "color": "White",
+        "size": "XL",
+        "stock": "5",
+        "sold": "0",
+        "discount": "0"
+      }
+    ],
+    "isAvailable": "true"
+  },
+  {
+    "name": "Urban Sneakers",
+    "description": "Stylish navy sneakers with a cushioned insole for maximum comfort on the go.",
+    "category": "Shoes",
+    "basePriceInPennies": "5299",
+    "gender": "Unisex",
+    "selectedInventoryData": [
+      {
+        "color": "Navy",
+        "size": "UK5",
+        "stock": "20",
+        "sold": "5",
+        "discount": "0"
+      },
+      {
+        "color": "Navy",
+        "size": "UK7",
+        "stock": "18",
+        "sold": "4",
+        "discount": "10"
+      },
+      {
+        "color": "Navy",
+        "size": "UK9",
+        "stock": "10",
+        "sold": "1",
+        "discount": "5"
+      },
+      {
+        "color": "Black",
+        "size": "UK10",
+        "stock": "12",
+        "sold": "2",
+        "discount": "0"
+      },
+      {
+        "color": "Black",
+        "size": "UK11",
+        "stock": "8",
+        "sold": "0",
+        "discount": "10"
+      }
+    ],
+    "isAvailable": "true"
+  },
+  {
+    "name": "Comfy T-shirt",
+    "description": "A versatile brown T-shirt with a classic fit, perfect for layering or wearing solo.",
+    "category": "T-shirt",
+    "basePriceInPennies": "1499",
+    "gender": "Male",
+    "selectedInventoryData": [
+      {
+        "color": "Brown",
+        "size": "XS",
+        "stock": "25",
+        "sold": "3",
+        "discount": "0"
+      },
+      {
+        "color": "Brown",
+        "size": "S",
+        "stock": "20",
+        "sold": "5",
+        "discount": "5"
+      },
+      {
+        "color": "Brown",
+        "size": "M",
+        "stock": "15",
+        "sold": "1",
+        "discount": "0"
+      },
+      {
+        "color": "Green",
+        "size": "L",
+        "stock": "10",
+        "sold": "2",
+        "discount": "10"
+      },
+      {
+        "color": "Green",
+        "size": "XL",
+        "stock": "5",
+        "sold": "0",
+        "discount": "0"
+      }
+    ],
+    "isAvailable": "true"
+  },
+  {
+    "name": "Explorer's Trousers",
+    "description": "Functional green trousers for the adventurer, with deep pockets and durable fabric.",
+    "category": "Trousers",
+    "basePriceInPennies": "4999",
+    "gender": "Male",
+    "selectedInventoryData": [
+      {
+        "color": "Green",
+        "size": "W28L28",
+        "stock": "15",
+        "sold": "1",
+        "discount": "0"
+      },
+      {
+        "color": "Green",
+        "size": "W30L30",
+        "stock": "10",
+        "sold": "2",
+        "discount": "5"
+      },
+      {
+        "color": "Green",
+        "size": "W32L32",
+        "stock": "8",
+        "sold": "0",
+        "discount": "0"
+      },
+      {
+        "color": "Navy",
+        "size": "W34L34",
+        "stock": "5",
+        "sold": "1",
+        "discount": "10"
+      }
+    ],
+    "isAvailable": "true"
+  },
+  {
+    "name": "Classic Skirt",
+    "description": "An elegant navy skirt that pairs well with any top, ideal for work or casual outings.",
+    "category": "Skirts",
+    "basePriceInPennies": "3199",
+    "gender": "Female",
+    "selectedInventoryData": [
+      {
+        "color": "Navy",
+        "size": "XS",
+        "stock": "20",
+        "sold": "2",
+        "discount": "0"
+      },
+      {
+        "color": "Navy",
+        "size": "S",
+        "stock": "15",
+        "sold": "3",
+        "discount": "5"
+      },
+      {
+        "color": "Navy",
+        "size": "M",
+        "stock": "10",
+        "sold": "1",
+        "discount": "10"
+      },
+      {
+        "color": "Violet",
+        "size": "L",
+        "stock": "8",
+        "sold": "0",
+        "discount": "0"
+      },
+      {
+        "color": "Violet",
+        "size": "XL",
+        "stock": "6",
+        "sold": "1",
+        "discount": "15"
+      }
+    ],
+    "isAvailable": "true"
+  },
+  {
+    "name": "Summer Dress",
+    "description": "A flowy yellow summer dress that is light and comfortable for warm days.",
+    "category": "Dresses",
+    "basePriceInPennies": "6299",
+    "gender": "Female",
+    "selectedInventoryData": [
+      {
+        "color": "Yellow",
+        "size": "XS",
+        "stock": "12",
+        "sold": "0",
+        "discount": "5"
+      },
+      {
+        "color": "Yellow",
+        "size": "S",
+        "stock": "18",
+        "sold": "1",
+        "discount": "0"
+      },
+      {
+        "color": "Yellow",
+        "size": "M",
+        "stock": "10",
+        "sold": "2",
+        "discount": "10"
+      },
+      {
+        "color": "Pink",
+        "size": "L",
+        "stock": "7",
+        "sold": "1",
+        "discount": "0"
+      },
+      {
+        "color": "Pink",
+        "size": "XL",
+        "stock": "5",
+        "sold": "0",
+        "discount": "15"
+      }
+    ],
+    "isAvailable": "true"
+  },
+  {
+    "name": "Cozy Socks",
+    "description": "Soft pink socks for extra warmth and comfort, with a plush feel.",
+    "category": "Socks",
+    "basePriceInPennies": "699",
+    "gender": "Unisex",
+    "selectedInventoryData": [
+      {
+        "color": "Pink",
+        "size": "UK4-UK6",
+        "stock": "30",
+        "sold": "8",
+        "discount": "0"
+      },
+      {
+        "color": "Pink",
+        "size": "UK6-UK8",
+        "stock": "25",
+        "sold": "3",
+        "discount": "5"
+      },
+      {
+        "color": "Pink",
+        "size": "UK8-UK10",
+        "stock": "10",
+        "sold": "1",
+        "discount": "10"
+      },
+      {
+        "color": "White",
+        "size": "UK10-UK12",
+        "stock": "12",
+        "sold": "2",
+        "discount": "0"
+      }
+    ],
+    "isAvailable": "true"
+  },
+  {
+    "name": "Knit Jumper",
+    "description": "A soft knit violet jumper with a cozy fit, perfect for a winter look.",
+    "category": "Jumpers",
+    "basePriceInPennies": "4499",
+    "gender": "Female",
+    "selectedInventoryData": [
+      {
+        "color": "Violet",
+        "size": "XS",
+        "stock": "18",
+        "sold": "2",
+        "discount": "5"
+      },
+      {
+        "color": "Violet",
+        "size": "S",
+        "stock": "20",
+        "sold": "3",
+        "discount": "0"
+      },
+      {
+        "color": "Violet",
+        "size": "M",
+        "stock": "15",
+        "sold": "1",
+        "discount": "10"
+      },
+      {
+        "color": "Black",
+        "size": "L",
+        "stock": "10",
+        "sold": "0",
+        "discount": "0"
+      },
+      {
+        "color": "Black",
+        "size": "XL",
+        "stock": "5",
+        "sold": "1",
+        "discount": "15"
+      }
+    ],
+    "isAvailable": "true"
+  },
+  {
+    "name": "Comfortable Underwear",
+    "description": "Breathable blue underwear with a relaxed fit for all-day comfort.",
+    "category": "Underwear",
+    "basePriceInPennies": "1599",
+    "gender": "Male",
+    "selectedInventoryData": [
+      {
+        "color": "Blue",
+        "size": "S",
+        "stock": "20",
+        "sold": "2",
+        "discount": "0"
+      },
+      {
+        "color": "Blue",
+        "size": "M",
+        "stock": "18",
+        "sold": "3",
+        "discount": "5"
+      },
+      {
+        "color": "Blue",
+        "size": "L",
+        "stock": "15",
+        "sold": "1",
+        "discount": "10"
+      },
+      {
+        "color": "Black",
+        "size": "L",
+        "stock": "10",
+        "sold": "0",
+        "discount": "0"
+      },
+      {
+        "color": "Black",
+        "size": "XL",
+        "stock": "8",
+        "sold": "0",
+        "discount": "5"
+      }
+    ],
+    "isAvailable": "true"
+  },
+  {
+    "name": "Comfort Hoodie",
+    "description": "A cozy hoodie made from premium fabric, perfect for everyday comfort.",
+    "category": "Hoodies",
+    "basePriceInPennies": "4599",
+    "gender": "Unisex",
+    "selectedInventoryData": [
+      {
+        "color": "Aqua",
+        "size": "XS",
+        "stock": "20",
+        "sold": "2",
+        "discount": "5"
+      },
+      {
+        "color": "Pink",
+        "size": "S",
+        "stock": "15",
+        "sold": "5",
+        "discount": "0"
+      },
+      {
+        "color": "Blue",
+        "size": "M",
+        "stock": "25",
+        "sold": "8",
+        "discount": "10"
+      },
+      {
+        "color": "Black",
+        "size": "L",
+        "stock": "12",
+        "sold": "3",
+        "discount": "5"
+      },
+      {
+        "color": "White",
+        "size": "XL",
+        "stock": "10",
+        "sold": "4",
+        "discount": "0"
+      }
+    ],
+    "isAvailable": "true"
+  },
+  {
+    "name": "Classic T-shirt",
+    "description": "A simple, classic T-shirt for a clean look and all-day wear.",
+    "category": "T-shirt",
+    "basePriceInPennies": "1299",
+    "gender": "Male",
+    "selectedInventoryData": [
+      {
+        "color": "Navy",
+        "size": "XS",
+        "stock": "30",
+        "sold": "5",
+        "discount": "0"
+      },
+      {
+        "color": "Green",
+        "size": "S",
+        "stock": "22",
+        "sold": "3",
+        "discount": "10"
+      },
+      {
+        "color": "Brown",
+        "size": "M",
+        "stock": "18",
+        "sold": "4",
+        "discount": "5"
+      },
+      {
+        "color": "Yellow",
+        "size": "L",
+        "stock": "10",
+        "sold": "2",
+        "discount": "15"
+      },
+      {
+        "color": "White",
+        "size": "XL",
+        "stock": "8",
+        "sold": "1",
+        "discount": "0"
+      }
+    ],
+    "isAvailable": "true"
+  },
+  {
+    "name": "Warm Winter Socks",
+    "description": "Thick and warm socks designed to keep your feet comfortable during winter.",
+    "category": "Socks",
+    "basePriceInPennies": "799",
+    "gender": "Unisex",
+    "selectedInventoryData": [
+      {
+        "color": "Brown",
+        "size": "UK4-UK6",
+        "stock": "40",
+        "sold": "10",
+        "discount": "0"
+      },
+      {
+        "color": "Black",
+        "size": "UK6-UK8",
+        "stock": "35",
+        "sold": "8",
+        "discount": "5"
+      },
+      {
+        "color": "Navy",
+        "size": "UK8-UK10",
+        "stock": "20",
+        "sold": "4",
+        "discount": "0"
+      },
+      {
+        "color": "Green",
+        "size": "UK10-UK12",
+        "stock": "15",
+        "sold": "5",
+        "discount": "10"
+      }
+    ],
+    "isAvailable": "true"
+  },
+  {
+    "name": "Luxe Trousers",
+    "description": "Elegant trousers with a tailored fit, suitable for both work and leisure.",
+    "category": "Trousers",
+    "basePriceInPennies": "5499",
+    "gender": "Female",
+    "selectedInventoryData": [
+      {
+        "color": "Aqua",
+        "size": "W28L28",
+        "stock": "18",
+        "sold": "2",
+        "discount": "5"
+      },
+      {
+        "color": "Violet",
+        "size": "W30L30",
+        "stock": "12",
+        "sold": "4",
+        "discount": "0"
+      },
+      {
+        "color": "Navy",
+        "size": "W32L32",
+        "stock": "15",
+        "sold": "6",
+        "discount": "10"
+      },
+      {
+        "color": "Black",
+        "size": "W34L34",
+        "stock": "10",
+        "sold": "3",
+        "discount": "5"
+      }
+    ],
+    "isAvailable": "true"
+  },
+  {
+    "name": "Everyday Dress",
+    "description": "A versatile dress that is both stylish and comfortable, ideal for daily wear.",
+    "category": "Dresses",
+    "basePriceInPennies": "6299",
+    "gender": "Female",
+    "selectedInventoryData": [
+      {
+        "color": "Pink",
+        "size": "XS",
+        "stock": "10",
+        "sold": "0",
+        "discount": "0"
+      },
+      {
+        "color": "Yellow",
+        "size": "S",
+        "stock": "12",
+        "sold": "2",
+        "discount": "5"
+      },
+      {
+        "color": "Blue",
+        "size": "M",
+        "stock": "20",
+        "sold": "4",
+        "discount": "10"
+      },
+      {
+        "color": "Green",
+        "size": "L",
+        "stock": "15",
+        "sold": "5",
+        "discount": "5"
+      },
+      {
+        "color": "White",
+        "size": "XL",
+        "stock": "8",
+        "sold": "1",
+        "discount": "0"
+      }
+    ],
+    "isAvailable": "true"
+  },
+  {
+    "name": "Slim Fit Underwear",
+    "description": "Slim fit underwear with a soft touch, designed for comfort all day long.",
+    "category": "Underwear",
+    "basePriceInPennies": "1599",
+    "gender": "Male",
+    "selectedInventoryData": [
+      {
+        "color": "Black",
+        "size": "XS",
+        "stock": "15",
+        "sold": "3",
+        "discount": "0"
+      },
+      {
+        "color": "Blue",
+        "size": "S",
+        "stock": "20",
+        "sold": "5",
+        "discount": "10"
+      },
+      {
+        "color": "Blue",
+        "size": "M",
+        "stock": "25",
+        "sold": "6",
+        "discount": "5"
+      },
+      {
+        "color": "White",
+        "size": "L",
+        "stock": "18",
+        "sold": "2",
+        "discount": "0"
+      },
+      {
+        "color": "Navy",
+        "size": "XL",
+        "stock": "10",
+        "sold": "1",
+        "discount": "0"
+      }
+    ],
+    "isAvailable": "true"
+  },
+  {
+    "name": "Active Skirt",
+    "description": "A sporty skirt designed for comfort and style, perfect for active days.",
+    "category": "Skirts",
+    "basePriceInPennies": "2999",
+    "gender": "Female",
+    "selectedInventoryData": [
+      {
+        "color": "Red",
+        "size": "XS",
+        "stock": "15",
+        "sold": "1",
+        "discount": "0"
+      },
+      {
+        "color": "Violet",
+        "size": "S",
+        "stock": "18",
+        "sold": "2",
+        "discount": "5"
+      },
+      {
+        "color": "Green",
+        "size": "M",
+        "stock": "12",
+        "sold": "3",
+        "discount": "10"
+      },
+      {
+        "color": "Navy",
+        "size": "L",
+        "stock": "10",
+        "sold": "0",
+        "discount": "0"
+      },
+      {
+        "color": "Yellow",
+        "size": "XL",
+        "stock": "5",
+        "sold": "1",
+        "discount": "15"
+      }
+    ],
+    "isAvailable": "true"
+  },
+  {
+    "name": "Chill Jumper",
+    "description": "A relaxed fit jumper, ideal for cool evenings and cozy days.",
+    "category": "Jumpers",
+    "basePriceInPennies": "3499",
+    "gender": "Unisex",
+    "selectedInventoryData": [
+      {
+        "color": "White",
+        "size": "XS",
+        "stock": "20",
+        "sold": "3",
+        "discount": "5"
+      },
+      {
+        "color": "Brown",
+        "size": "S",
+        "stock": "22",
+        "sold": "4",
+        "discount": "0"
+      },
+      {
+        "color": "Black",
+        "size": "M",
+        "stock": "18",
+        "sold": "6",
+        "discount": "5"
+      },
+      {
+        "color": "Black",
+        "size": "L",
+        "stock": "15",
+        "sold": "2",
+        "discount": "0"
+      },
+      {
+        "color": "Pink",
+        "size": "XL",
+        "stock": "12",
+        "sold": "1",
+        "discount": "10"
+      }
+    ],
+    "isAvailable": "true"
+  },
+  {
+    "name": "Lounge Hat",
+    "description": "A soft hat made for lounging and outdoor adventures alike.",
+    "category": "Hats",
+    "basePriceInPennies": "1299",
+    "gender": "Unisex",
+    "selectedInventoryData": [
+      {
+        "color": "Red",
+        "size": "XS",
+        "stock": "25",
+        "sold": "5",
+        "discount": "0"
+      },
+      {
+        "color": "Aqua",
+        "size": "S",
+        "stock": "20",
+        "sold": "3",
+        "discount": "10"
+      },
+      {
+        "color": "Blue",
+        "size": "M",
+        "stock": "15",
+        "sold": "2",
+        "discount": "5"
+      },
+      {
+        "color": "Yellow",
+        "size": "L",
+        "stock": "18",
+        "sold": "6",
+        "discount": "5"
+      },
+      {
+        "color": "White",
+        "size": "XL",
+        "stock": "10",
+        "sold": "1",
+        "discount": "15"
+      }
+    ],
+    "isAvailable": "true"
+  },
+  {
+    "name": "Essential Dress",
+    "description": "A sleek, versatile dress that offers both comfort and elegance.",
+    "category": "Dresses",
+    "basePriceInPennies": "4999",
+    "gender": "Female",
+    "selectedInventoryData": [
+      {
+        "color": "Pink",
+        "size": "XS",
+        "stock": "12",
+        "sold": "2",
+        "discount": "5"
+      },
+      {
+        "color": "Violet",
+        "size": "S",
+        "stock": "15",
+        "sold": "1",
+        "discount": "0"
+      },
+      {
+        "color": "Navy",
+        "size": "M",
+        "stock": "20",
+        "sold": "3",
+        "discount": "10"
+      },
+      {
+        "color": "Green",
+        "size": "L",
+        "stock": "10",
+        "sold": "2",
+        "discount": "5"
+      },
+      {
+        "color": "Aqua",
+        "size": "XL",
+        "stock": "8",
+        "sold": "0",
+        "discount": "0"
+      }
+    ],
+    "isAvailable": "true"
   }
 ]

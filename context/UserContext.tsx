@@ -3,9 +3,19 @@
 import React, { createContext, useState, useContext, ReactNode } from "react";
 
 type UserContextProps = {
-  userData: { user_id: number; username: string } | null;
+  userData: {
+    user_id: number;
+    username: string;
+    email: string;
+    created_at: string;
+  } | null;
   setUserData: React.Dispatch<
-    React.SetStateAction<{ user_id: number; username: string } | null>
+    React.SetStateAction<{
+      user_id: number;
+      username: string;
+      email: string;
+      created_at: string;
+    } | null>
   >;
 };
 
@@ -19,6 +29,8 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
   const [userData, setUserData] = useState<{
     user_id: number;
     username: string;
+    email: string;
+    created_at: string;
   } | null>(null);
 
   return (

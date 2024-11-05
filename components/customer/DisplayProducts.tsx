@@ -9,11 +9,11 @@ import PriceSlider from "./PriceSlider";
 import AvailabilityFilter from "../productFilters/Availability";
 import { useSearch } from "../../context/SearchContext";
 
-type DisplayProductsProps = {
+export default function DisplayProducts({
+  products,
+}: {
   products: UpdatedProduct[];
-};
-
-export default function DisplayProducts({ products }: DisplayProductsProps) {
+}) {
   const { searchInput, setSearchInput } = useSearch();
   const [storedProducts, setStoredProducts] =
     useState<UpdatedProduct[]>(products);
@@ -41,7 +41,9 @@ export default function DisplayProducts({ products }: DisplayProductsProps) {
 
   useEffect(() => {
     if (products) {
-      const prices = products.map((product) => product.priceInPennies / 100);
+      const prices = products.map(
+        (product) => product.base_price_in_pennies / 100
+      );
       const storeMaxPrice = Math.max(...prices);
       const maxPrice = storeMaxPrice + 5;
       setMaxPrice(maxPrice);
@@ -49,48 +51,27 @@ export default function DisplayProducts({ products }: DisplayProductsProps) {
 
       const uniqueCategories = products.reduce<string[]>(
         (categories, product) => {
-          const normalizedCategory = product.category.toLowerCase();
-          if (
-            !categories.some(
-              (category) => category.toLowerCase() === normalizedCategory
-            )
-          ) {
-            categories.push(
-              normalizedCategory.charAt(0).toLocaleUpperCase() +
-                normalizedCategory.slice(1)
-            );
+          if (!categories.includes(product.category)) {
+            categories.push(product.category);
           }
-          const sortedAlphabeticalOrder = categories.sort();
-          return sortedAlphabeticalOrder;
+          return categories.sort();
         },
         []
       );
       setCategories(uniqueCategories);
 
       const uniqueGenders = products.reduce<string[]>((genders, product) => {
-        const normalizedGender = product.gender.toLowerCase();
-        if (
-          !genders.some((gender) => gender.toLowerCase() === normalizedGender)
-        ) {
-          genders.push(
-            normalizedGender.charAt(0).toLocaleUpperCase() +
-              normalizedGender.slice(1)
-          );
+        if (!genders.includes(product.gender)) {
+          genders.push(product.gender);
         }
         return genders;
       }, []);
       setGenders(uniqueGenders);
 
       const uniqueColors = products.reduce<string[]>((colors, product) => {
-        product.colors.forEach((productColor) => {
-          const normalizedColor = productColor.toLowerCase();
-          if (
-            !colors.some((color) => color.toLowerCase() === normalizedColor)
-          ) {
-            colors.push(
-              normalizedColor.charAt(0).toLocaleUpperCase() +
-                normalizedColor.slice(1)
-            );
+        product.product_variations.forEach((product_variation) => {
+          if (!colors.includes(product_variation.color)) {
+            colors.push(product_variation.color);
           }
         });
         return colors;
@@ -98,12 +79,15 @@ export default function DisplayProducts({ products }: DisplayProductsProps) {
       setColors(uniqueColors);
 
       const uniqueSizes = products.reduce<string[]>((sizes, product) => {
-        product.sizes.forEach((productSize) => {
-          const normalizedSize = productSize.toLowerCase();
-          if (!sizes.some((size) => size.toLowerCase() === normalizedSize)) {
-            sizes.push(normalizedSize.toUpperCase());
-          }
-        });
+        product.product_variations.forEach((product_variation) =>
+          product_variation.product_size_inventory.forEach(
+            (product_size_inventory_data) => {
+              if (!sizes.includes(product_size_inventory_data.size)) {
+                sizes.push(product_size_inventory_data.size);
+              }
+            }
+          )
+        );
         return sizes;
       }, []);
       setSizes(uniqueSizes);
@@ -120,18 +104,32 @@ export default function DisplayProducts({ products }: DisplayProductsProps) {
     }
 
     if (availabilityFilter.available && !availabilityFilter.unAvailable) {
-      result = result.filter((product) => product.stock === 0);
+      result = result.filter((product) =>
+        product.product_variations.some((product_variation) =>
+          product_variation.product_size_inventory.some(
+            (product_size_inventory_data) =>
+              Number(product_size_inventory_data.stock) === 0
+          )
+        )
+      );
     } else if (
       !availabilityFilter.available &&
       availabilityFilter.unAvailable
     ) {
-      result = result.filter((product) => product.stock > 0);
+      result = result.filter((product) =>
+        product.product_variations.some((product_variation) =>
+          product_variation.product_size_inventory.some(
+            (product_size_inventory_data) =>
+              Number(product_size_inventory_data.stock) > 0
+          )
+        )
+      );
     }
 
     result = result.filter(
       (product) =>
-        product.priceInPennies / 100 >= priceRange[0] &&
-        product.priceInPennies / 100 <= priceRange[1]
+        product.base_price_in_pennies / 100 >= priceRange[0] &&
+        product.base_price_in_pennies / 100 <= priceRange[1]
     );
 
     if (filterByCategories) {
@@ -148,7 +146,7 @@ export default function DisplayProducts({ products }: DisplayProductsProps) {
     if (filterByGenders) {
       result = result.filter((product) => {
         return filterByGenders.some((filterByGender) => {
-          const normalizedProductGender = product.gender.toLowerCase();
+          const normalizedProductGender = product.gender;
           if (filterByGender === normalizedProductGender) {
             return true;
           }
@@ -160,8 +158,8 @@ export default function DisplayProducts({ products }: DisplayProductsProps) {
     if (filterByColors) {
       result = result.filter((product) => {
         return filterByColors.some((filterByColor) => {
-          const normalizedProductColor = product.colors.map((color) =>
-            color.toLowerCase()
+          const normalizedProductColor = product.product_variations.map(
+            (product_variations) => product_variations.color
           );
           if (normalizedProductColor.includes(filterByColor)) {
             return true;
@@ -174,8 +172,12 @@ export default function DisplayProducts({ products }: DisplayProductsProps) {
     if (filterBySizes) {
       result = result.filter((product) => {
         return filterBySizes.some((filterBySize) => {
-          const normalizedProductSize = product.sizes.map((size) =>
-            size.toLowerCase()
+          const normalizedProductSize = product.product_variations.flatMap(
+            (product_variation) =>
+              product_variation.product_size_inventory.flatMap(
+                (product_size_inventory_data) =>
+                  product_size_inventory_data.size
+              )
           );
           if (normalizedProductSize.includes(filterBySize)) {
             return true;
@@ -188,8 +190,8 @@ export default function DisplayProducts({ products }: DisplayProductsProps) {
     if (sortByPrice) {
       result = result.sort((a, b) =>
         sortByPrice === "lowHigh"
-          ? a.priceInPennies - b.priceInPennies
-          : b.priceInPennies - a.priceInPennies
+          ? a.base_price_in_pennies - b.base_price_in_pennies
+          : b.base_price_in_pennies - a.base_price_in_pennies
       );
     }
 
@@ -231,72 +233,64 @@ export default function DisplayProducts({ products }: DisplayProductsProps) {
 
   const handleFilterByCategory = (filterBy: string) => {
     setFilterByCategories((prevCategories) => {
-      const normalizedFilterBy = filterBy.toLowerCase();
       if (prevCategories) {
-        if (prevCategories.includes(normalizedFilterBy)) {
+        if (prevCategories.includes(filterBy)) {
           const updatedCategories = prevCategories.filter(
-            (category) => category !== normalizedFilterBy
+            (category) => category !== filterBy
           );
           return updatedCategories.length > 0 ? updatedCategories : null;
         } else {
-          return [...prevCategories, normalizedFilterBy];
+          return [...prevCategories, filterBy];
         }
       } else {
-        return [normalizedFilterBy];
+        return [filterBy];
       }
     });
   };
 
   const handleFilterByGender = (filterBy: string) => {
     setFilterByGenders((prevGender) => {
-      const normalizedFilterBy = filterBy.toLowerCase();
       if (prevGender) {
-        if (prevGender.includes(normalizedFilterBy)) {
+        if (prevGender.includes(filterBy)) {
           const updatedGenders = prevGender.filter(
-            (gender) => gender !== normalizedFilterBy
+            (gender) => gender !== filterBy
           );
           return updatedGenders.length > 0 ? updatedGenders : null;
         } else {
-          return [...prevGender, normalizedFilterBy];
+          return [...prevGender, filterBy];
         }
       } else {
-        return [normalizedFilterBy];
+        return [filterBy];
       }
     });
   };
 
   const handleFilterByColor = (filterBy: string) => {
     setFilterByColors((prevColor) => {
-      const normalizedFilterBy = filterBy.toLowerCase();
       if (prevColor) {
-        if (prevColor.includes(normalizedFilterBy)) {
-          const updatedColors = prevColor.filter(
-            (color) => color !== normalizedFilterBy
-          );
+        if (prevColor.includes(filterBy)) {
+          const updatedColors = prevColor.filter((color) => color !== filterBy);
           return updatedColors.length > 0 ? updatedColors : null;
         } else {
-          return [...prevColor, normalizedFilterBy];
+          return [...prevColor, filterBy];
         }
       } else {
-        return [normalizedFilterBy];
+        return [filterBy];
       }
     });
   };
 
   const handleFilterBySize = (filterBy: string) => {
     setFilterBySizes((prevSize) => {
-      const normalizedFilterBy = filterBy.toLowerCase();
       if (prevSize) {
-        if (prevSize.includes(normalizedFilterBy)) {
-          const updatedSizes = prevSize.filter(
-            (size) => size !== normalizedFilterBy
-          );
+        if (prevSize.includes(filterBy)) {
+          const updatedSizes = prevSize.filter((size) => size !== filterBy);
           return updatedSizes.length > 0 ? updatedSizes : null;
         } else {
-          return [...prevSize, normalizedFilterBy];
+          return [...prevSize, filterBy];
         }
       } else {
-        return [normalizedFilterBy];
+        return [filterBy];
       }
     });
   };
@@ -332,13 +326,12 @@ export default function DisplayProducts({ products }: DisplayProductsProps) {
               absolute={false}
               isInput={true}
               totalAmount={
-                products.filter(
-                  (product) => product.category === category.toLocaleLowerCase()
-                ).length
+                products.filter((product) => product.category === category)
+                  .length
               }
               filteredAmount={
                 storedProducts.filter(
-                  (product) => product.category === category.toLocaleLowerCase()
+                  (product) => product.category === category
                 ).length
               }
               onClick={() => handleFilterByCategory(category)}
@@ -353,14 +346,11 @@ export default function DisplayProducts({ products }: DisplayProductsProps) {
               absolute={false}
               isInput={true}
               totalAmount={
-                products.filter(
-                  (product) => product.gender === gender.toLowerCase()
-                ).length
+                products.filter((product) => product.gender === gender).length
               }
               filteredAmount={
-                storedProducts.filter(
-                  (product) => product.gender === gender.toLowerCase()
-                ).length
+                storedProducts.filter((product) => product.gender === gender)
+                  .length
               }
               onClick={() => handleFilterByGender(gender)}
             />
@@ -376,12 +366,16 @@ export default function DisplayProducts({ products }: DisplayProductsProps) {
               iscolor={true}
               totalAmount={
                 products.filter((product) =>
-                  product.colors.some((productColor) => productColor === color)
+                  product.product_variations.some(
+                    (product_variation) => product_variation.color === color
+                  )
                 ).length
               }
               filteredAmount={
                 storedProducts.filter((product) =>
-                  product.colors.some((productColor) => productColor === color)
+                  product.product_variations.some(
+                    (product_variation) => product_variation.color === color
+                  )
                 ).length
               }
               onClick={() => handleFilterByColor(color)}
@@ -397,12 +391,22 @@ export default function DisplayProducts({ products }: DisplayProductsProps) {
               isInput={true}
               totalAmount={
                 products.filter((product) =>
-                  product.sizes.some((productSize) => productSize === size)
+                  product.product_variations.some((product_variation) =>
+                    product_variation.product_size_inventory.some(
+                      (product_size_inventory_data) =>
+                        product_size_inventory_data.size === size
+                    )
+                  )
                 ).length
               }
               filteredAmount={
                 storedProducts.filter((product) =>
-                  product.sizes.some((productSize) => productSize === size)
+                  product.product_variations.some((product_variation) =>
+                    product_variation.product_size_inventory.some(
+                      (product_size_inventory_data) =>
+                        product_size_inventory_data.size === size
+                    )
+                  )
                 ).length
               }
               onClick={() => handleFilterBySize(size)}

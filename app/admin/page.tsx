@@ -45,7 +45,7 @@ export default async function AdminDashboard() {
           data={fetchUsers}
         ></DashboardCard>
         <DashboardCard
-          title="Contact us submittions"
+          title="Contact us submissions"
           subtitle="Total"
           data={fetchContactUs}
         ></DashboardCard>
